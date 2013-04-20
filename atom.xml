@@ -4,7 +4,7 @@
   <title><![CDATA[Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-04-20T18:43:50-05:00</updated>
+  <updated>2013-04-20T18:51:28-05:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -14,11 +14,11 @@
 
   
   <entry>
-    <title type="html"><![CDATA[My First Post]]></title>
+    <title type="html"><![CDATA[New Blog Coming Soon]]></title>
     <link href="http://jeffreyway.github.io/blog/2013/04/20/my-first-post/"/>
     <updated>2013-04-20T18:05:00-05:00</updated>
     <id>http://jeffreyway.github.io/blog/2013/04/20/my-first-post</id>
-    <content type="html"><![CDATA[<p>Here is my first post. Bla Bla.</p>
+    <content type="html"><![CDATA[<p>Nothing to see here just yet, folks. Move along.</p>
 
 <blockquote><p>And here is some text.</p></blockquote>
 
