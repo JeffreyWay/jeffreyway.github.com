@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[My Octopress Blog]]></title>
+  <link href="http://yoursite.com/atom.xml" rel="self"/>
+  <link href="http://yoursite.com/"/>
+  <updated>2013-04-20T18:17:09-05:00</updated>
+  <id>http://yoursite.com/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[My First Post]]></title>
+    <link href="http://yoursite.com/blog/2013/04/20/my-first-post/"/>
+    <updated>2013-04-20T18:05:00-05:00</updated>
+    <id>http://yoursite.com/blog/2013/04/20/my-first-post</id>
+    <content type="html"><![CDATA[<p>Here is my first post. Bla Bla.</p>
+
+<blockquote><p>And here is some text.</p></blockquote>
+
+<p>And now we have some code.</p>
+
+<pre><code>$name = 'jeff';
+echo $name;
+</code></pre>
+
+<p>What about GitHub style?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="x">$name = function() {</span>
+</span><span class='line'><span class="x">  return &#39;very nice&#39;;</span>
+</span><span class='line'><span class="x">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> the official form.</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$name</span> <span class="o">=</span> <span class="s1">&#39;jeff&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">test</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">$name</span> <span class="o">==</span> <span class="s1">&#39;jeff&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="nx">echo</span> <span class="s1">&#39;nice&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And now with a title.</p>
+
+<figure class='code'><figcaption><span>Creating a function - function.php </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$name</span> <span class="o">=</span> <span class="s1">&#39;jeff&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">function</span> <span class="nf">test</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nv">$name</span> <span class="o">==</span> <span class="s1">&#39;jeff&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="k">echo</span> <span class="s1">&#39;nice&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
+  
+</feed>
