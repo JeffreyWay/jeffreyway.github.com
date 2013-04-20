@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://JeffreyWay.github.io/sitemap.xml 
+Sitemap: http://jeffreyway.github.io/sitemap.xml 

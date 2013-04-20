@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
-  <link href="http://JeffreyWay.github.io/atom.xml" rel="self"/>
-  <link href="http://JeffreyWay.github.io/"/>
-  <updated>2013-04-20T18:33:23-05:00</updated>
-  <id>http://JeffreyWay.github.io/</id>
+  <title><![CDATA[Jeffrey Way]]></title>
+  <link href="http://jeffreyway.github.io/atom.xml" rel="self"/>
+  <link href="http://jeffreyway.github.io/"/>
+  <updated>2013-04-20T18:43:50-05:00</updated>
+  <id>http://jeffreyway.github.io/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[Jeffrey Way]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[My First Post]]></title>
-    <link href="http://JeffreyWay.github.io/blog/2013/04/20/my-first-post/"/>
+    <link href="http://jeffreyway.github.io/blog/2013/04/20/my-first-post/"/>
     <updated>2013-04-20T18:05:00-05:00</updated>
-    <id>http://JeffreyWay.github.io/blog/2013/04/20/my-first-post</id>
+    <id>http://jeffreyway.github.io/blog/2013/04/20/my-first-post</id>
     <content type="html"><![CDATA[<p>Here is my first post. Bla Bla.</p>
 
 <blockquote><p>And here is some text.</p></blockquote>
