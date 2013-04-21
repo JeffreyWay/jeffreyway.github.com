@@ -97,22 +97,35 @@
 
 <blockquote><p>Controller tests should verify responses, ensure that the correct database access methods are triggered, and the appropriate instance variables are sent to the view.</p></blockquote>
 
+<!--more-->
+
+
 <h2>The Hello World of Controller Testing</h2>
 
 <p>The best way to learn these things is through examples. Here&#8217;s the hello world of controller tests in Laravel.</p>
 
-<pre><code>&lt;?php # app/tests/controllers/PostsControllerTest.php
+<figure class='code'><figcaption><span>app/tests/controllers/PostsControllerTest.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">class</span> <span class="nx">PostsControllerTest</span> <span class="kr">extends</span> <span class="nx">TestCase</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kr">public</span> <span class="kd">function</span> <span class="nx">testIndex</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">client</span><span class="o">-&gt;</span><span class="nx">request</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;posts&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-class PostsControllerTest extends TestCase {
 
-    public function testIndex()
-    {
-        $this-&gt;client-&gt;request('GET', 'posts');
-    }
-}
-</code></pre>
-
-<p>Laravel leverages a handful of Symfony&#8217;s components to ease the process of testing routes and views, including HttpKernel, DomCrawler, and BrowserKit. This is why it&#8217;s paramount that your PHPUnit tests inherit from, not <code>PHPUnit_Framework_TestCase</code>, but <code>TestCase</code>. Don&#8217;t worry, Laravel still extends the former, but it helps setup the Laravel app for testing, as well provides a variety of helper assertion methods that you are encouraged to use. More on that shortly.</p>
+<p>Laravel leverages a handful of Symfony&#8217;s components to ease the process of testing routes and views, including HttpKernel, DomCrawler, and BrowserKit. This is why it&#8217;s paramount that your PHPUnit tests inherit from, not <code>PHPUnit_Framework_TestCase</code>, but <code>TestCase</code>. Don&#8217;t worry, Laravel still extends the former, but it helps setup the Laravel app for testing, as well as provides a variety of helper assertion methods that you are encouraged to use. More on that shortly.</p>
 
 <p>In the code snippet above, we make a <code>GET</code> request to <code>/posts</code>, or <code>localhost:8000/posts</code>. Assuming that this line is added to a fresh installation of Laravel, Symfony will throw a <code>NotFoundHttpException</code>. If working along, try it out by running <code>phpunit</code> from the command line.</p>
 
@@ -125,38 +138,60 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 
 <p>As you can imagine, this type of request is common enough to the point that it makes sense to provide a helper method, such as <code>$this-&gt;call()</code>. In fact, Laravel does that very thing! This means that the previous example can be refactored, like so:</p>
 
-<pre><code>public function testIndex()
-{
-    $this-&gt;call('GET', 'posts');
-}
-</code></pre>
+<figure class='code'><figcaption><span>app/tests/PostsControllerTest.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">public</span> <span class="kd">function</span> <span class="nx">testIndex</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">call</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;posts&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>Overloading is Your Friend</h3>
 
 <p>Though we&#8217;ll stick with the base functionality in this chapter, in my personal projects, I take things a step further by allowing for such methods as <code>$this-&gt;get()</code>, <code>$this-&gt;post()</code>, etc. Thanks to PHP overloading, this only requires the addition of a single method, which you could add to <code>app/tests/TestCase.php</code>.</p>
 
-<pre><code>public function __call($method, $args)
-{
-    if (in_array($method, ['get', 'post', 'put', 'patch', 'delete']))
-    {
-        $this-&gt;call($method, $args[0]);
-    }
+<figure class='code'><figcaption><span>app/tests/controllers/PostsControllerTest.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">public</span> <span class="kd">function</span> <span class="nx">__call</span><span class="p">(</span><span class="nx">$method</span><span class="p">,</span> <span class="nx">$args</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">in_array</span><span class="p">(</span><span class="nx">$method</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;get&#39;</span><span class="p">,</span> <span class="s1">&#39;post&#39;</span><span class="p">,</span> <span class="s1">&#39;put&#39;</span><span class="p">,</span> <span class="s1">&#39;patch&#39;</span><span class="p">,</span> <span class="s1">&#39;delete&#39;</span><span class="p">]))</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">call</span><span class="p">(</span><span class="nx">$method</span><span class="p">,</span> <span class="nx">$args</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nx">BadMethodCallException</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    throw new BadMethodCallException;
-}
-</code></pre>
 
 <p>Now, you&#8217;re free to write <code>$this-&gt;get('posts')</code> and achieve the exact same result as the previous two examples. As noted above, however, let&#8217;s stick with the framework&#8217;s base offerings for simplicity&#8217;s sake.</p>
 
 <p>To make the test pass, we only need to prepare the proper route.</p>
 
-<pre><code>&lt;?php # app/routes.php
+<figure class='code'><figcaption><span>app/routes.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">Route</span><span class="o">::</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="s1">&#39;all posts&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
 
-Route::get('posts', function()
-{
-    return 'all posts';
-});
-</code></pre>
 
 <p>Running <code>phpunit</code> again will return us to green.</p>
 
@@ -180,65 +215,111 @@ Route::get('posts', function()
 
 <p>The following examples calls <code>GET /posts</code> and verifies that its views receives the variable, <code>$posts</code>.</p>
 
-<pre><code>public function testIndex()
-{
-    $this-&gt;call('GET', 'posts');
+<figure class='code'><figcaption><span>app/tests/PostsControllerTest.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">public</span> <span class="kd">function</span> <span class="nx">testIndex</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">call</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;posts&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">assertViewHas</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    $this-&gt;assertViewHas('posts');
-}
-</code></pre>
 
-<p>T> <strong>Tip:</strong> When it comes to formatting, I prefer to provide a line break between a test&#8217;s assertion and the code that prepares the stage.</p>
+<blockquote><p><strong>Tip:</strong> When it comes to formatting, I prefer to provide a line break between a test&#8217;s assertion and the code that prepares the stage.</p></blockquote>
 
 <p>Let&#8217;s assume that the <code>posts</code> route consists of:</p>
 
-<pre><code>Route::get('posts', function()
-{
-    return View::make('posts.index');
-});
-</code></pre>
+<figure class='code'><figcaption><span>app/routes.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">Route</span><span class="o">::</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">View</span><span class="o">::</span><span class="nx">make</span><span class="p">(</span><span class="s1">&#39;posts.index&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>Should we run <code>phpunit</code>, it will squawk with a helpful <em>next step</em> message:</p>
 
-<pre><code>1) PostsControllerTest::testIndex
-Failed asserting that an array has the key 'posts'.
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>1<span class="o">)</span> PostsControllerTest::testIndex
+</span><span class='line'>Failed asserting that an array has the key <span class="s1">&#39;posts&#39;</span>.
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>To make it green, we simply fetch the posts and pass it to the view.</p>
 
-<pre><code>Route::get('posts', function()
-{
-    $posts = Post::all();
+<figure class='code'><figcaption><span>app/routes.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">Route</span><span class="o">::</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nx">$posts</span> <span class="o">=</span> <span class="nx">Post</span><span class="o">::</span><span class="nx">all</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">View</span><span class="o">::</span><span class="nx">make</span><span class="p">(</span><span class="s1">&#39;posts.index&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="o">-&gt;</span><span class="kd">with</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="nx">$posts</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    return View::make('posts.index')
-        -&gt;with('posts', $posts);
-});
-</code></pre>
 
 <p>One thing to keep in mind is that, as the code currently stands, it only ensures that the variable, <code>$posts</code>, is passed to the view. It doesn&#8217;t inspect its value. The <code>assertViewHas</code> optionally accepts a second argument to verify the value of the variable, as well as its existence.</p>
 
-<pre><code>public function testIndex()
-{
-    $this-&gt;call('GET', 'posts');
+<figure class='code'><figcaption><span>app/tests/PostsControllerTest.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">public</span> <span class="kd">function</span> <span class="nx">testIndex</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">call</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;posts&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">assertViewHas</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    $this-&gt;assertViewHas('posts', 'foo');
-}
-</code></pre>
 
 <p>With this modified code, unles the view has a variable, <code>$posts</code>, that is equal to <code>foo</code>, the test will fail. In this situation, though, it&#8217;s likely that we&#8217;d rather not specify a value, but instead declare that the value be an instance of Laravel&#8217;s <code>Illuminate\Database\Eloquent\Collection</code> class. How might we accomplish that? PHPUnit provides a helpful <code>assertInstanceOf</code> assertion to fill this very need!</p>
 
-<pre><code>public function testIndex()
-{
-    $this-&gt;call('GET', 'posts');
+<figure class='code'><figcaption><span>app/tests/PostsControllerTest.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">public</span> <span class="kd">function</span> <span class="nx">testIndex</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nx">$response</span> <span class="o">=</span> <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">call</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;posts&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">assertViewHas</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// getData() returns all vars attached to the response.</span>
+</span><span class='line'>    <span class="nx">$posts</span> <span class="o">=</span> <span class="nx">$response</span><span class="o">-&gt;</span><span class="nx">original</span><span class="o">-&gt;</span><span class="nx">getData</span><span class="p">()[</span><span class="s1">&#39;posts&#39;</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">assertInstanceOf</span><span class="p">(</span><span class="s1">&#39;Illuminate\Database\Eloquent\Collection&#39;</span><span class="p">,</span> <span class="nx">$posts</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    $this-&gt;assertViewHas('posts');
-
-    # getData() returns all vars attached to the response.
-    $posts = $this-&gt;client-&gt;getResponse()-&gt;original-&gt;getData()['posts'];
-
-    $this-&gt;assertInstanceOf('Illuminate\Database\Eloquent\Collection', $posts);
-}
-</code></pre>
 
 <p>With this modification, we&#8217;ve declared that the controller <strong>must</strong> pass <code>$posts</code> - an instance of <code>Illuminate\Database\Eloquent\Collection</code> - to the view. Excellent.</p>
 
@@ -258,17 +339,24 @@ Failed asserting that an array has the key 'posts'.
 
 <p>Unfortunately, so far, we&#8217;ve structured the code in a way that makes it virtually impossible to test.</p>
 
-<p>Route::get(&#8216;posts&#8217;, function()
-{</p>
+<figure class='code'><figcaption><span>app/routes.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">Route</span><span class="o">::</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// Ouch. We can&#39;t test this!!</span>
+</span><span class='line'>    <span class="nx">$posts</span> <span class="o">=</span> <span class="nx">Post</span><span class="o">::</span><span class="nx">all</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">View</span><span class="o">::</span><span class="nx">make</span><span class="p">(</span><span class="s1">&#39;posts.index&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="o">-&gt;</span><span class="kd">with</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="nx">$posts</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<pre><code>// Ouch. We can't test this!!
-$posts = Post::all();
-
-return View::make('posts.index')
-    -&gt;with('posts', $posts);
-</code></pre>
-
-<p>});</p>
 
 <p>This is precisely why it&#8217;s considered bad practice to nest Eloquent calls into your controllers. Don&#8217;t confuse Laravel&#8217;s facades, which are testable and can be swapped out with mocks, with your Eloquent models. The solution is to inject the database layer into the controller through the constructor. This requires some refactoring.</p>
 
@@ -276,71 +364,151 @@ return View::make('posts.index')
 
 <p>Let&#8217;s replace the <code>posts</code> route with:</p>
 
-<pre><code>Route::resource('posts', 'PostsController')
-</code></pre>
+<figure class='code'><figcaption><span>app/routes.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">Route</span><span class="o">::</span><span class="nx">resource</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="s1">&#39;PostsController&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>&#8230;and create the necessary resourceful controller with Artisan.</p>
 
-<pre><code>$ php artisan controller:make PostsController
-Controller created successfully!
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>php artisan controller:make PostsController
+</span><span class='line'>Controller created successfully!
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>Now, rather than referencing the <code>Post</code> model directly, we&#8217;ll inject it into the controller&#8217;s constructor. Here&#8217;s a condensed example that omits all restful methods except the one that we&#8217;re currently interested in testing.</p>
 
-<pre><code>&lt;?php
+<figure class='code'><figcaption><span>app/controllers/PostsController.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">class</span> <span class="nx">PostsController</span> <span class="kr">extends</span> <span class="nx">BaseController</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kr">protected</span> <span class="nx">$post</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kr">public</span> <span class="kd">function</span> <span class="nx">__construct</span><span class="p">(</span><span class="nx">Post</span> <span class="nx">$post</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">post</span> <span class="o">=</span> <span class="nx">$post</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kr">public</span> <span class="kd">function</span> <span class="nx">index</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="nx">$posts</span> <span class="o">=</span> <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">post</span><span class="o">-&gt;</span><span class="nx">all</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">View</span><span class="o">::</span><span class="nx">make</span><span class="p">(</span><span class="s1">&#39;posts.index&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="o">-&gt;</span><span class="kd">with</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="nx">$posts</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-class PostsController extends BaseController {
 
-    protected $post;
+<p>This is a significantly better way to structure the code. Because the model is now injected, we have the ability to swap it out with a mocked version for testing. Here&#8217;s an example of doing just that:</p>
 
-    public function __construct(Post $post)
-    {
-        $this-&gt;post = $post;
-    }
+<figure class='code'><figcaption><span>app/tests/PostsControllerTest.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">class</span> <span class="nx">PostsControllerTest</span> <span class="kr">extends</span> <span class="nx">TestCase</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kr">public</span> <span class="kd">function</span> <span class="nx">__construct</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// We have no interest in testing Eloquent</span>
+</span><span class='line'>        <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">mock</span> <span class="o">=</span> <span class="nx">Mockery</span><span class="o">::</span><span class="nx">mock</span><span class="p">(</span><span class="s1">&#39;Eloquent&#39;</span><span class="p">,</span> <span class="s1">&#39;Post&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kr">public</span> <span class="kd">function</span> <span class="nx">tearDown</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nx">Mockery</span><span class="o">::</span><span class="nx">close</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kr">public</span> <span class="kd">function</span> <span class="nx">testIndex</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">mock</span>
+</span><span class='line'>             <span class="o">-&gt;</span><span class="nx">shouldReceive</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+</span><span class='line'>             <span class="o">-&gt;</span><span class="nx">once</span><span class="p">()</span>
+</span><span class='line'>             <span class="o">-&gt;</span><span class="nx">andReturn</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">app</span><span class="o">-&gt;</span><span class="nx">instance</span><span class="p">(</span><span class="s1">&#39;Post&#39;</span><span class="p">,</span> <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">mock</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">call</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;posts&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">assertViewHas</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    public function index()
-    {
-        $posts = $this-&gt;post-&gt;all();
 
-        return View::make('posts.index')
-            -&gt;with('posts', $posts);
-    }
+<p>The key benfit to this restructuring is that, now, the database will never needlessly be hit. Instead, using Mockery, we merely verify that the <code>all</code> method is triggered on the model.</p>
 
-}
-</code></pre>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">mock</span>
+</span><span class='line'>     <span class="o">-&gt;</span><span class="nx">shouldReceive</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+</span><span class='line'>     <span class="o">-&gt;</span><span class="nx">once</span><span class="p">()</span>
+</span><span class='line'>     <span class="o">-&gt;</span><span class="nx">andReturn</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>This is a significantly better way to structure the code. Because the model is now injected, we have the ability to swap it out with a mocked version for testing.</p>
 
-<pre><code>&lt;?php
+<h3>The IoC Container</h3>
 
-class PostsControllerTest extends TestCase {
+<p>Laravel&#8217;s IoC container drastically eases the process of injecting dependencies into your classes. Each time a controller is requested, it is resolved out of the IoC container. As such, when we need to declare that a mock version of <code>Post</code> should be used for testing, we only need to provide Laravel with the instance of <code>Post</code> that should be used.</p>
 
-    public function __construct()
-    {
-        $this-&gt;mock = Mockery::mock('Eloquent', 'Post');
-    }
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">app</span><span class="o">-&gt;</span><span class="nx">instance</span><span class="p">(</span><span class="s1">&#39;Post&#39;</span><span class="p">,</span> <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">mock</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    public function tearDown()
-    {
-        Mockery::close();
-    }
-
-    public function testIndex()
-    {
-        $this-&gt;mock
-             -&gt;shouldReceive('all')
-             -&gt;once()
-             -&gt;andReturn('foo');
-
-        $this-&gt;app-&gt;instance('Post', $this-&gt;mock);
-
-        $this-&gt;call('GET', 'posts');
-
-        $this-&gt;assertViewHas('posts');
-    }
-
-}
-</code></pre>
 </div>
 
 
@@ -368,7 +536,7 @@ class PostsControllerTest extends TestCase {
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/laravel/'>Laravel,</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
+    <a class='category' href='/blog/categories/laravel/'>Laravel</a>, <a class='category' href='/blog/categories/tdd/'>TDD</a>
   
 </span>
 

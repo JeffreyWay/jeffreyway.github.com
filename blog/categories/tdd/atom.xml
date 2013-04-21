@@ -4,7 +4,7 @@
   <title><![CDATA[Category: TDD | Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/blog/categories/tdd/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-04-21T13:39:59-05:00</updated>
+  <updated>2013-04-21T16:12:57-05:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -24,22 +24,28 @@
 
 <blockquote><p>Controller tests should verify responses, ensure that the correct database access methods are triggered, and the appropriate instance variables are sent to the view.</p></blockquote>
 
+<!--more-->
+
+
 <h2>The Hello World of Controller Testing</h2>
 
 <p>The best way to learn these things is through examples. Here's the hello world of controller tests in Laravel.</p>
 
-<pre><code>&lt;?php # app/tests/controllers/PostsControllerTest.php
+<p>```js app/tests/controllers/PostsControllerTest.php
+&lt;?php</p>
 
-class PostsControllerTest extends TestCase {
+<p>class PostsControllerTest extends TestCase {</p>
 
-    public function testIndex()
-    {
-        $this-&gt;client-&gt;request('GET', 'posts');
-    }
+<pre><code>public function testIndex()
+{
+    $this-&gt;client-&gt;request('GET', 'posts');
 }
 </code></pre>
 
-<p>Laravel leverages a handful of Symfony's components to ease the process of testing routes and views, including HttpKernel, DomCrawler, and BrowserKit. This is why it's paramount that your PHPUnit tests inherit from, not <code>PHPUnit_Framework_TestCase</code>, but <code>TestCase</code>. Don't worry, Laravel still extends the former, but it helps setup the Laravel app for testing, as well provides a variety of helper assertion methods that you are encouraged to use. More on that shortly.</p>
+<p>}
+```</p>
+
+<p>Laravel leverages a handful of Symfony's components to ease the process of testing routes and views, including HttpKernel, DomCrawler, and BrowserKit. This is why it's paramount that your PHPUnit tests inherit from, not <code>PHPUnit_Framework_TestCase</code>, but <code>TestCase</code>. Don't worry, Laravel still extends the former, but it helps setup the Laravel app for testing, as well as provides a variety of helper assertion methods that you are encouraged to use. More on that shortly.</p>
 
 <p>In the code snippet above, we make a <code>GET</code> request to <code>/posts</code>, or <code>localhost:8000/posts</code>. Assuming that this line is added to a fresh installation of Laravel, Symfony will throw a <code>NotFoundHttpException</code>. If working along, try it out by running <code>phpunit</code> from the command line.</p>
 
@@ -52,38 +58,49 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 
 <p>As you can imagine, this type of request is common enough to the point that it makes sense to provide a helper method, such as <code>$this-&gt;call()</code>. In fact, Laravel does that very thing! This means that the previous example can be refactored, like so:</p>
 
-<pre><code>public function testIndex()
-{
-    $this-&gt;call('GET', 'posts');
-}
+<p>```js app/tests/PostsControllerTest.php
+public function testIndex()
+{</p>
+
+<pre><code>$this-&gt;call('GET', 'posts');
 </code></pre>
+
+<p>}
+```</p>
 
 <h3>Overloading is Your Friend</h3>
 
 <p>Though we'll stick with the base functionality in this chapter, in my personal projects, I take things a step further by allowing for such methods as <code>$this-&gt;get()</code>, <code>$this-&gt;post()</code>, etc. Thanks to PHP overloading, this only requires the addition of a single method, which you could add to <code>app/tests/TestCase.php</code>.</p>
 
-<pre><code>public function __call($method, $args)
-{
-    if (in_array($method, ['get', 'post', 'put', 'patch', 'delete']))
-    {
-        $this-&gt;call($method, $args[0]);
-    }
+<p>```js app/tests/controllers/PostsControllerTest.php
+public function __call($method, $args)
+{</p>
 
-    throw new BadMethodCallException;
+<pre><code>if (in_array($method, ['get', 'post', 'put', 'patch', 'delete']))
+{
+    $this-&gt;call($method, $args[0]);
 }
+
+throw new BadMethodCallException;
 </code></pre>
+
+<p>}
+```</p>
 
 <p>Now, you're free to write <code>$this-&gt;get('posts')</code> and achieve the exact same result as the previous two examples. As noted above, however, let's stick with the framework's base offerings for simplicity's sake.</p>
 
 <p>To make the test pass, we only need to prepare the proper route.</p>
 
-<pre><code>&lt;?php # app/routes.php
+<p>```js app/routes.php
+&lt;?php</p>
 
-Route::get('posts', function()
+<pre><code>Route::get('posts', function()
 {
     return 'all posts';
 });
 </code></pre>
+
+<p>```</p>
 
 <p>Running <code>phpunit</code> again will return us to green.</p>
 
@@ -107,65 +124,88 @@ Route::get('posts', function()
 
 <p>The following examples calls <code>GET /posts</code> and verifies that its views receives the variable, <code>$posts</code>.</p>
 
-<pre><code>public function testIndex()
-{
-    $this-&gt;call('GET', 'posts');
+<p>```js app/tests/PostsControllerTest.php
+public function testIndex()
+{</p>
 
-    $this-&gt;assertViewHas('posts');
-}
+<pre><code>$this-&gt;call('GET', 'posts');
+
+$this-&gt;assertViewHas('posts');
 </code></pre>
 
-<p>T> <strong>Tip:</strong> When it comes to formatting, I prefer to provide a line break between a test's assertion and the code that prepares the stage.</p>
+<p>}
+```</p>
+
+<blockquote><p><strong>Tip:</strong> When it comes to formatting, I prefer to provide a line break between a test's assertion and the code that prepares the stage.</p></blockquote>
 
 <p>Let's assume that the <code>posts</code> route consists of:</p>
 
-<pre><code>Route::get('posts', function()
-{
-    return View::make('posts.index');
-});
+<p>```js app/routes.php
+&lt;?php</p>
+
+<p>Route::get('posts', function()
+{</p>
+
+<pre><code>return View::make('posts.index');
 </code></pre>
+
+<p>});
+```</p>
 
 <p>Should we run <code>phpunit</code>, it will squawk with a helpful <em>next step</em> message:</p>
 
-<pre><code>1) PostsControllerTest::testIndex
+<p><code>bash
+1) PostsControllerTest::testIndex
 Failed asserting that an array has the key 'posts'.
-</code></pre>
+</code></p>
 
 <p>To make it green, we simply fetch the posts and pass it to the view.</p>
 
-<pre><code>Route::get('posts', function()
-{
-    $posts = Post::all();
+<p>```js app/routes.php
+Route::get('posts', function()
+{</p>
 
-    return View::make('posts.index')
-        -&gt;with('posts', $posts);
-});
+<pre><code>$posts = Post::all();
+
+return View::make('posts.index')
+    -&gt;with('posts', $posts);
 </code></pre>
+
+<p>});
+```</p>
 
 <p>One thing to keep in mind is that, as the code currently stands, it only ensures that the variable, <code>$posts</code>, is passed to the view. It doesn't inspect its value. The <code>assertViewHas</code> optionally accepts a second argument to verify the value of the variable, as well as its existence.</p>
 
-<pre><code>public function testIndex()
-{
-    $this-&gt;call('GET', 'posts');
+<p>```js app/tests/PostsControllerTest.php
+public function testIndex()
+{</p>
 
-    $this-&gt;assertViewHas('posts', 'foo');
-}
+<pre><code>$this-&gt;call('GET', 'posts');
+
+$this-&gt;assertViewHas('posts', 'foo');
 </code></pre>
+
+<p>}
+```</p>
 
 <p>With this modified code, unles the view has a variable, <code>$posts</code>, that is equal to <code>foo</code>, the test will fail. In this situation, though, it's likely that we'd rather not specify a value, but instead declare that the value be an instance of Laravel's <code>Illuminate\Database\Eloquent\Collection</code> class. How might we accomplish that? PHPUnit provides a helpful <code>assertInstanceOf</code> assertion to fill this very need!</p>
 
-<pre><code>public function testIndex()
-{
-    $this-&gt;call('GET', 'posts');
+<p>```js app/tests/PostsControllerTest.php
+public function testIndex()
+{</p>
 
-    $this-&gt;assertViewHas('posts');
+<pre><code>$response = $this-&gt;call('GET', 'posts');
 
-    # getData() returns all vars attached to the response.
-    $posts = $this-&gt;client-&gt;getResponse()-&gt;original-&gt;getData()['posts'];
+$this-&gt;assertViewHas('posts');
 
-    $this-&gt;assertInstanceOf('Illuminate\Database\Eloquent\Collection', $posts);
-}
+// getData() returns all vars attached to the response.
+$posts = $response-&gt;original-&gt;getData()['posts'];
+
+$this-&gt;assertInstanceOf('Illuminate\Database\Eloquent\Collection', $posts);
 </code></pre>
+
+<p>}
+```</p>
 
 <p>With this modification, we've declared that the controller <strong>must</strong> pass <code>$posts</code> - an instance of <code>Illuminate\Database\Eloquent\Collection</code> - to the view. Excellent.</p>
 
@@ -185,7 +225,8 @@ Failed asserting that an array has the key 'posts'.
 
 <p>Unfortunately, so far, we've structured the code in a way that makes it virtually impossible to test.</p>
 
-<p>Route::get('posts', function()
+<p>```js app/routes.php
+Route::get('posts', function()
 {</p>
 
 <pre><code>// Ouch. We can't test this!!
@@ -195,7 +236,8 @@ return View::make('posts.index')
     -&gt;with('posts', $posts);
 </code></pre>
 
-<p>});</p>
+<p>});
+```</p>
 
 <p>This is precisely why it's considered bad practice to nest Eloquent calls into your controllers. Don't confuse Laravel's facades, which are testable and can be swapped out with mocks, with your Eloquent models. The solution is to inject the database layer into the controller through the constructor. This requires some refactoring.</p>
 
@@ -203,71 +245,103 @@ return View::make('posts.index')
 
 <p>Let's replace the <code>posts</code> route with:</p>
 
-<pre><code>Route::resource('posts', 'PostsController')
-</code></pre>
+<p><code>js app/routes.php
+Route::resource('posts', 'PostsController');
+</code></p>
 
 <p>...and create the necessary resourceful controller with Artisan.</p>
 
-<pre><code>$ php artisan controller:make PostsController
+<p><code>bash
+$ php artisan controller:make PostsController
 Controller created successfully!
-</code></pre>
+</code></p>
 
 <p>Now, rather than referencing the <code>Post</code> model directly, we'll inject it into the controller's constructor. Here's a condensed example that omits all restful methods except the one that we're currently interested in testing.</p>
 
-<pre><code>&lt;?php
+<p>```js app/controllers/PostsController.php
+&lt;?php</p>
 
-class PostsController extends BaseController {
+<p>class PostsController extends BaseController {</p>
 
-    protected $post;
+<p>  protected $post;</p>
 
-    public function __construct(Post $post)
-    {
-        $this-&gt;post = $post;
-    }
+<p>  public function __construct(Post $post)
+  {</p>
 
-    public function index()
-    {
-        $posts = $this-&gt;post-&gt;all();
+<pre><code>  $this-&gt;post = $post;
+</code></pre>
 
-        return View::make('posts.index')
-            -&gt;with('posts', $posts);
-    }
+<p>  }</p>
 
+<p>  public function index()
+  {</p>
+
+<pre><code>  $posts = $this-&gt;post-&gt;all();
+
+  return View::make('posts.index')
+    -&gt;with('posts', $posts);
+</code></pre>
+
+<p>  }</p>
+
+<p>}
+```</p>
+
+<p>This is a significantly better way to structure the code. Because the model is now injected, we have the ability to swap it out with a mocked version for testing. Here's an example of doing just that:</p>
+
+<p>```js app/tests/PostsControllerTest.php
+&lt;?php</p>
+
+<p>class PostsControllerTest extends TestCase {</p>
+
+<pre><code>public function __construct()
+{
+    // We have no interest in testing Eloquent
+    $this-&gt;mock = Mockery::mock('Eloquent', 'Post');
+}
+
+public function tearDown()
+{
+    Mockery::close();
+}
+
+public function testIndex()
+{
+    $this-&gt;mock
+         -&gt;shouldReceive('all')
+         -&gt;once()
+         -&gt;andReturn('foo');
+
+    $this-&gt;app-&gt;instance('Post', $this-&gt;mock);
+
+    $this-&gt;call('GET', 'posts');
+
+    $this-&gt;assertViewHas('posts');
 }
 </code></pre>
 
-<p>This is a significantly better way to structure the code. Because the model is now injected, we have the ability to swap it out with a mocked version for testing.</p>
+<p>}
+```</p>
 
-<pre><code>&lt;?php
+<p>The key benfit to this restructuring is that, now, the database will never needlessly be hit. Instead, using Mockery, we merely verify that the <code>all</code> method is triggered on the model.</p>
 
-class PostsControllerTest extends TestCase {
+<p>```js
+$this->mock</p>
 
-    public function __construct()
-    {
-        $this-&gt;mock = Mockery::mock('Eloquent', 'Post');
-    }
-
-    public function tearDown()
-    {
-        Mockery::close();
-    }
-
-    public function testIndex()
-    {
-        $this-&gt;mock
-             -&gt;shouldReceive('all')
-             -&gt;once()
-             -&gt;andReturn('foo');
-
-        $this-&gt;app-&gt;instance('Post', $this-&gt;mock);
-
-        $this-&gt;call('GET', 'posts');
-
-        $this-&gt;assertViewHas('posts');
-    }
-
-}
+<pre><code> -&gt;shouldReceive('all')
+ -&gt;once()
+ -&gt;andReturn('foo');
 </code></pre>
+
+<p>```</p>
+
+<h3>The IoC Container</h3>
+
+<p>Laravel's IoC container drastically eases the process of injecting dependencies into your classes. Each time a controller is requested, it is resolved out of the IoC container. As such, when we need to declare that a mock version of <code>Post</code> should be used for testing, we only need to provide Laravel with the instance of <code>Post</code> that should be used.</p>
+
+<p><code>js
+$this-&gt;app-&gt;instance('Post', $this-&gt;mock);
+</code></p>
 ]]></content>
   </entry>
   
