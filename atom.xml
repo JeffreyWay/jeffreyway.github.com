@@ -4,7 +4,7 @@
   <title><![CDATA[Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-04-20T22:22:39-05:00</updated>
+  <updated>2013-04-20T22:26:05-05:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -19,6 +19,9 @@
     <updated>2013-04-20T18:05:00-05:00</updated>
     <id>http://jeffreyway.github.io/blog/2013/04/20/my-first-post</id>
     <content type="html"><![CDATA[<p>Nothing to see here just yet, folks. Move along.</p>
+
+<!--more-->
+
 
 <blockquote><p>And here is some text.</p></blockquote>
 
