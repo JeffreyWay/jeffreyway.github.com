@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Laravel | Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/blog/categories/laravel/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-04-22T22:50:11-04:00</updated>
+  <updated>2013-04-22T22:54:34-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -67,7 +67,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 
 <p>As you can imagine, this type of request is common enough to the point that it makes sense to provide a helper method, such as <code>$this-&gt;call()</code>. In fact, Laravel does that very thing! This means that the previous example can be refactored, like so:</p>
 
-<p>```js app/tests/PostsControllerTest.php
+<p>```js app/tests/controllers/PostsControllerTest.php
 public function testIndex()
 {</p>
 
@@ -134,7 +134,7 @@ throw new BadMethodCallException;
 
 <p>The following examples calls <code>GET /posts</code> and verifies that its views receives the variable, <code>$posts</code>.</p>
 
-<p>```js app/tests/PostsControllerTest.php
+<p>```js app/tests/controllers/PostsControllerTest.php
 public function testIndex()
 {</p>
 
@@ -196,7 +196,7 @@ return View::make('posts.index')
 
 <p>One thing to keep in mind is that, as the code currently stands, it only ensures that the variable, <code>$posts</code>, is passed to the view. It doesn't inspect its value. The <code>assertViewHas</code> optionally accepts a second argument to verify the value of the variable, as well as its existence.</p>
 
-<p>```js app/tests/PostsControllerTest.php
+<p>```js app/tests/controllers/PostsControllerTest.php
 public function testIndex()
 {</p>
 
@@ -210,7 +210,7 @@ $this-&gt;assertViewHas('posts', 'foo');
 
 <p>With this modified code, unles the view has a variable, <code>$posts</code>, that is equal to <code>foo</code>, the test will fail. In this situation, though, it's likely that we'd rather not specify a value, but instead declare that the value be an instance of Laravel's <code>Illuminate\Database\Eloquent\Collection</code> class. How might we accomplish that? PHPUnit provides a helpful <code>assertInstanceOf</code> assertion to fill this very need!</p>
 
-<p>```js app/tests/PostsControllerTest.php
+<p>```js app/tests/controllers/PostsControllerTest.php
 public function testIndex()
 {</p>
 
@@ -311,7 +311,7 @@ Controller created successfully!
 
 <p>This is a significantly better way to structure the code. Because the model is now injected, we have the ability to swap it out with a mocked version for testing. Here's an example of doing just that:</p>
 
-<p>```js app/tests/PostsControllerTest.php
+<p>```js app/tests/controllers/PostsControllerTest.php
 &lt;?php</p>
 
 <p>class PostsControllerTest extends TestCase {</p>
@@ -375,7 +375,7 @@ $this-&gt;app-&gt;instance('Post', $this-&gt;mock);
 
 <p>Another common expectation that you'll find yourself writing is one that ensures that the user is redirected to the proper location, perhaps upon adding a new post to the database. How might we accomplish this?</p>
 
-<p>```js app/tests/PostsControllerTest.php
+<p>```js app/tests/controllers/PostsControllerTest.php
 public function testStore()
 {</p>
 
@@ -405,7 +405,7 @@ $this-&gt;call('POST', 'posts');
 
 <p>You might prefer to also ensure that the <code>$_POST</code> superglobal is passed to the <code>create</code> method. Even though we aren't physically submitting a form, we can still allow for this, via the <code>Input::replace()</code> method, which allows us to "stub" this array. Here's the modified test, which uses Mockery's <code>with()</code> method to verify the arguments passed to the method referenced by <code>shouldReceive</code>.</p>
 
-<p>```js app/tests/PostsControllerTest.php
+<p>```js app/tests/controllers/PostsControllerTest.php
 public function testStore()
 {</p>
 
@@ -440,7 +440,7 @@ $this-&gt;assertRedirectedToRoute('posts.index');
 
 <p>This first path will be for failed validation.</p>
 
-<p>```js app/tests/PostsControllerTest.php
+<p>```js app/tests/controllers/PostsControllerTest.php
 public function testStoreFails()
 {</p>
 
@@ -465,7 +465,7 @@ $this-&gt;assertSessionHasErrors(['title']);
 
 <p>Now for the test that handles successful validation.</p>
 
-<p>```js app/tests/PostsControllerTest.php
+<p>```js app/tests/controllers/PostsControllerTest.php
 public function testStoreSuccess()
 {</p>
 
@@ -937,7 +937,7 @@ Post::shouldReceive('all')-&gt;once();
 <p>}
 ```</p>
 
-<p>If you can manage the inner "Should I be embedding test logic into production code" battle, you'll find that this allows for significantly more readable tests.</p>
+<p>If you can manage the inner "<em>Should I be embedding test logic into production code</em>" battle, you'll find that this allows for significantly more readable tests.</p>
 
 <p>```js app/tests/controllers/PostsControllerTest.php
 &lt;?php</p>
@@ -982,6 +982,8 @@ public function testStoreSuccess()
 
 <p>}
 ```</p>
+
+<p>It feels good, doesn't it?</p>
 ]]></content>
   </entry>
   
