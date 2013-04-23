@@ -4,7 +4,7 @@
   <title><![CDATA[Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-04-22T18:47:27-04:00</updated>
+  <updated>2013-04-22T22:50:11-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -30,9 +30,9 @@
 <p>The process of testing a controller can be divided into three pieces.</p>
 
 <ul>
-<li><em>Isolate:</em> Mock all dependencies (perhaps excluding the <code>View</code>)</li>
-<li><em>Call:</em> Trigger the desired controller method</li>
-<li><em>Ensure:</em> Perform assertions, verifying that the stage has been set properly.</li>
+<li><strong>Isolate:</strong> Mock all dependencies (perhaps excluding the <code>View</code>)</li>
+<li><strong>Call:</strong> Trigger the desired controller method</li>
+<li><strong>Ensure:</strong> Perform assertions, verifying that the stage has been set properly.</li>
 </ul>
 
 
@@ -274,7 +274,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 
 <p>There&#8217;s one glaring problem with our tests so far. Did you catch it?</p>
 
-<blockquote><p>For each test, a SQL query is being performed on the database. Though this is useful for certain kinds of testing (acceptance, integration), for basic controller testing, it will only decrease the performance of your tests.</p></blockquote>
+<blockquote><p>For each test, a SQL query is being executed on the database. Though this is useful for certain kinds of testing (acceptance, integration), for basic controller testing, it will only decrease the performance of your tests.</p></blockquote>
 
 <p>I&#8217;ve drilled this into your skull multiple times at this point. We&#8217;re not interested in testing Eloquent&#8217;s ability to fetch records from a database. It has its own tests. Taylor knows it works! Let&#8217;s not waste time and processing power repeating those same tests.</p>
 
@@ -695,7 +695,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 
 <h2>Repositories</h2>
 
-<p>To allow for the most flexibility, rather than creating a direct link between your controller and an ORM, like Eloquent, it&#8217;s better to code to an interface. The considerable advantage to this approach is that, should you perhaps need to swap out Eloquent for, say, Mongo or Reddis, doing so literally requires the modification of a single line. Even better, the controller doesn&#8217;t ever need to be touched.</p>
+<p>To allow for the most flexibility, rather than creating a direct link between your controller and an ORM, like Eloquent, it&#8217;s better to code to an interface. The considerable advantage to this approach is that, should you perhaps need to swap out Eloquent for, say, Mongo or Redis, doing so literally requires the modification of a single line. Even better, the controller doesn&#8217;t ever need to be touched.</p>
 
 <blockquote><p>Repositories represent the data access layer of your application.</p></blockquote>
 
@@ -934,7 +934,423 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 
 <h2>Structure</h2>
 
-<p>(To be updated. 4/23/2013)</p>
+<p>So far in this lesson, our organization has been a bit lacking. IoC bindings in the <code>routes.php</code> file? All repositories grouped together in one directory? Sure, that may work in the beginning, but, very quickly, it&#8217;ll become apparent that this doesn&#8217;t scale.</p>
+
+<p>In the final section of this article, we&#8217;ll PSR-ify the master library, and leverage service providers to register our bindings.</p>
+
+<blockquote><p>PSR-0 defines an autoloading standard that defines the mandatory requirements that must be adhered to for autoloader interoperability.</p></blockquote>
+
+<p>A PSR-0 loader may be registered with Composer, via the <code>psr-0</code> object.</p>
+
+<figure class='code'><figcaption><span>composer.json</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="s2">&quot;autoload&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;psr-0&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>        <span class="s2">&quot;Way&quot;</span><span class="o">:</span> <span class="s2">&quot;app/lib/&quot;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The syntax can be confusing at first. It certainly was for me. An easy way to decipher <code>"Way": "app/lib/"</code> is to think to yourself, &#8221;<em>The base folder for the <code>Way</code> namespace is located in <code>app/lib</code>.</em>&#8221; Of course, replace my last name with the name of your project. The directory structure to match this would be:</p>
+
+<ul>
+<li>app/
+
+<ul>
+<li>lib/
+
+<ul>
+<li>Way/</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Next, rather than grouping all repositories into a <code>repositories</code> directory, a more elegant approach might be to categorize them into multiple directories, like so:</p>
+
+<ul>
+<li>app/
+
+<ul>
+<li>lib/
+
+<ul>
+<li>Way/
+
+<ul>
+<li>Storage/
+
+<ul>
+<li>Post/
+
+<ul>
+<li>PostRepositoryInterface.php</li>
+<li>EloquentPostRepository.php</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<p>It&#8217;s vital that we adhere to this naming and folder convention, if we want the autoloading to work as expected. The only remaining thing to do is update the namespaces for <code>PostRepositoryInterface</code> and <code>EloquentPostRepository</code>.</p>
+
+<figure class='code'><figcaption><span>app/lib/Way/Storage/Post/PostRepositoryInterface.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">namespace</span> <span class="nx">Way</span><span class="err">\</span><span class="nx">Storage</span><span class="err">\</span><span class="nx">Post</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">interface</span> <span class="nx">PostRepositoryInterface</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kr">public</span> <span class="kd">function</span> <span class="nx">all</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kr">public</span> <span class="kd">function</span> <span class="nx">find</span><span class="p">(</span><span class="nx">$id</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kr">public</span> <span class="kd">function</span> <span class="nx">create</span><span class="p">(</span><span class="nx">$input</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>app/lib/Way/Storage/Post/EloquentPostRepository.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">namespace</span> <span class="nx">Way</span><span class="err">\</span><span class="nx">Storage</span><span class="err">\</span><span class="nx">Post</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">use</span> <span class="nx">Post</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">class</span> <span class="nx">EloquentPostRepository</span> <span class="kr">implements</span> <span class="nx">PostRepositoryInterface</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kr">public</span> <span class="kd">function</span> <span class="nx">all</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nx">Post</span><span class="o">::</span><span class="nx">all</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kr">public</span> <span class="kd">function</span> <span class="nx">find</span><span class="p">(</span><span class="nx">$id</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nx">Post</span><span class="o">::</span><span class="nx">find</span><span class="p">(</span><span class="nx">$id</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kr">public</span> <span class="kd">function</span> <span class="nx">create</span><span class="p">(</span><span class="nx">$input</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nx">Post</span><span class="o">::</span><span class="nx">create</span><span class="p">(</span><span class="nx">$input</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There we go; that&#8217;s much cleaner. But what about those pesky bindings? The routes file may be a convenient place to test experiment, but it makes little sense to store them there permanently. Instead, we&#8217;ll use service providers. TODO - definition.</p>
+
+<p>A <code>StorageServiceProvider</code> class can be used to register all repository bindings.</p>
+
+<blockquote><p>Service providers are nothing more than bootstrap classes that can be used to do anything you wish: register a binding, hook into an event, import a routes file, etc.</p></blockquote>
+
+<figure class='code'><figcaption><span>app/lib/Way/Storage/StorageServiceProvider.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">namespace</span> <span class="nx">Way</span><span class="err">\</span><span class="nx">Storage</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">use</span> <span class="nx">Illuminate</span><span class="err">\</span><span class="nx">Support</span><span class="err">\</span><span class="nx">ServiceProvider</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">class</span> <span class="nx">StorageServiceProvider</span> <span class="kr">extends</span> <span class="nx">ServiceProvider</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Triggered automatically by Laravel</span>
+</span><span class='line'>    <span class="kr">public</span> <span class="kd">function</span> <span class="nx">register</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">app</span><span class="o">-&gt;</span><span class="nx">bind</span><span class="p">(</span>
+</span><span class='line'>          <span class="s1">&#39;Way\Storage\Post\PostRepositoryInterface&#39;</span><span class="p">,</span>
+</span><span class='line'>          <span class="s1">&#39;Way\Storage\Post\EloquentPostRepository&#39;</span>
+</span><span class='line'>        <span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To make this file known to Laravel, you only need to include it in <code>app/config/app.php</code>, within the <code>providers</code> array.</p>
+
+<figure class='code'><figcaption><span>app/config/app.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="s1">&#39;providers&#39;</span> <span class="o">=&gt;</span> <span class="nx">array</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;Illuminate\Foundation\Providers\ArtisanServiceProvider&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;Illuminate\Auth\AuthServiceProvider&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="c1">// ...</span>
+</span><span class='line'>  <span class="s1">&#39;Way\Storage\StorageServiceProvider&#39;</span>
+</span><span class='line'><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Updating the Tests</h3>
+
+<p>With our new structure in place, rather than mocking the Eloquent model, itself, we can instead mock <code>PostRepositoryInterface</code>. Here&#8217;s an example of one such test:</p>
+
+<figure class='code'><figcaption><span>app/tests/controllers/PostsControllerTest.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">public</span> <span class="kd">function</span> <span class="nx">testIndex</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nx">$mock</span> <span class="o">=</span> <span class="nx">Mockery</span><span class="o">::</span><span class="nx">mock</span><span class="p">(</span><span class="s1">&#39;Way\Storage\Post\PostRepositoryInterface&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">$mock</span><span class="o">-&gt;</span><span class="nx">shouldReceive</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="nx">once</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">app</span><span class="o">-&gt;</span><span class="nx">instance</span><span class="p">(</span><span class="s1">&#39;Way\Storage\Post\PostRepositoryInterface&#39;</span><span class="p">,</span> <span class="nx">$mock</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">call</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;posts&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">assertViewHas</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>However, we can improve this even further. It stands to reason that every method within <code>PostsControllerTest</code> will require a mocked version of the repository. As such, it&#8217;s better to extract some of this prep work into its own method, like so:</p>
+
+<figure class='code'><figcaption><span>app/tests/controllers/PostsControllerTest.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kr">public</span> <span class="kd">function</span> <span class="nx">setUp</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nx">parent</span><span class="o">::</span><span class="nx">setUp</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">mock</span><span class="p">(</span><span class="s1">&#39;Way\Storage\Post\PostRepositoryInterface&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">public</span> <span class="kd">function</span> <span class="nx">mock</span><span class="p">(</span><span class="nx">$class</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nx">$mock</span> <span class="o">=</span> <span class="nx">Mockery</span><span class="o">::</span><span class="nx">mock</span><span class="p">(</span><span class="nx">$class</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">app</span><span class="o">-&gt;</span><span class="nx">instance</span><span class="p">(</span><span class="nx">$class</span><span class="p">,</span> <span class="nx">$mock</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">$mock</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">public</span> <span class="kd">function</span> <span class="nx">testIndex</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">mock</span><span class="o">-&gt;</span><span class="nx">shouldReceive</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="nx">once</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">call</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;posts&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">assertViewHas</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Not bad, ay?</p>
+
+<p>Now, if you want to be super-fly, and are willing to add a touch of test logic into your production, you could even perform your mocking within the Eloquent model! This would allow for:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">Post</span><span class="o">::</span><span class="nx">shouldReceive</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="nx">once</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Behind the scenes, this would mock <code>PostRepositoryInterface</code>, and update the IoC binding. You can&#8217;t get much more readable than that!</p>
+
+<p>Allowing for this syntax only requires you to update the <code>Post</code> model, or, better, a <code>BaseModel</code> that all of your Eloquent models extend. Here&#8217;s an example of the former:</p>
+
+<figure class='code'><figcaption><span>app/models/Post.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">class</span> <span class="nx">Post</span> <span class="kr">extends</span> <span class="nx">Eloquent</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kr">public</span> <span class="kr">static</span> <span class="kd">function</span> <span class="nx">shouldReceive</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nx">$class</span> <span class="o">=</span> <span class="nx">get_called_class</span><span class="p">();</span>
+</span><span class='line'>        <span class="nx">$repo</span> <span class="o">=</span> <span class="s2">&quot;Way\\Storage\\{$class}\\{$class}RepositoryInterface&quot;</span><span class="p">;</span>
+</span><span class='line'>        <span class="nx">$mock</span> <span class="o">=</span> <span class="nx">Mockery</span><span class="o">::</span><span class="nx">mock</span><span class="p">(</span><span class="nx">$repo</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">App</span><span class="o">::</span><span class="nx">instance</span><span class="p">(</span><span class="nx">$repo</span><span class="p">,</span> <span class="nx">$mock</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="nx">call_user_func_array</span><span class="p">([</span><span class="nx">$mock</span><span class="p">,</span> <span class="s1">&#39;shouldReceive&#39;</span><span class="p">],</span> <span class="nx">func_get_args</span><span class="p">());</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you can manage the inner &#8220;Should I be embedding test logic into production code&#8221; battle, you&#8217;ll find that this allows for significantly more readable tests.</p>
+
+<figure class='code'><figcaption><span>app/tests/controllers/PostsControllerTest.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>
+</span><span class='line'><span class="kr">class</span> <span class="nx">PostsControllerTest</span> <span class="kr">extends</span> <span class="nx">TestCase</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kr">public</span> <span class="kd">function</span> <span class="nx">tearDown</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nx">Mockery</span><span class="o">::</span><span class="nx">close</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kr">public</span> <span class="kd">function</span> <span class="nx">testIndex</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nx">Post</span><span class="o">::</span><span class="nx">shouldReceive</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="nx">once</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">call</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;posts&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">assertViewHas</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kr">public</span> <span class="kd">function</span> <span class="nx">testStoreFails</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nx">Input</span><span class="o">::</span><span class="nx">replace</span><span class="p">(</span><span class="nx">$input</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">call</span><span class="p">(</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="s1">&#39;posts&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">assertRedirectedToRoute</span><span class="p">(</span><span class="s1">&#39;posts.create&#39;</span><span class="p">);</span>
+</span><span class='line'>        <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">assertSessionHasErrors</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kr">public</span> <span class="kd">function</span> <span class="nx">testStoreSuccess</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="nx">Input</span><span class="o">::</span><span class="nx">replace</span><span class="p">(</span><span class="nx">$input</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Foo Title&#39;</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">Post</span><span class="o">::</span><span class="nx">shouldReceive</span><span class="p">(</span><span class="s1">&#39;create&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="nx">once</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">call</span><span class="p">(</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="s1">&#39;posts&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">assertRedirectedToRoute</span><span class="p">(</span><span class="s1">&#39;posts.index&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;flash&#39;</span><span class="p">]);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 ]]></content>
   </entry>
   
