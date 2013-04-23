@@ -4,7 +4,7 @@
   <title><![CDATA[Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-04-22T22:57:03-04:00</updated>
+  <updated>2013-04-22T23:25:07-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -30,15 +30,15 @@
 <p>The process of testing a controller can be divided into three pieces.</p>
 
 <ul>
-<li><strong>Isolate:</strong> Mock all dependencies (perhaps excluding the <code>View</code>)</li>
-<li><strong>Call:</strong> Trigger the desired controller method</li>
+<li><strong>Isolate:</strong> Mock all dependencies (perhaps excluding the <code>View</code>).</li>
+<li><strong>Call:</strong> Trigger the desired controller method.</li>
 <li><strong>Ensure:</strong> Perform assertions, verifying that the stage has been set properly.</li>
 </ul>
 
 
 <h2>The Hello World of Controller Testing</h2>
 
-<p>The best way to learn these things is through examples. Here&#8217;s the &#8220;hello world&#8221; of controller testing in Laravel.</p>
+<p>The best way to learn these things is through examples. Here&#8217;s the &#8221;<em>hello world</em>&#8221; of controller testing in Laravel.</p>
 
 <figure class='code'><figcaption><span>app/tests/controllers/PostsControllerTest.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -89,7 +89,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 
 <p>Though we&#8217;ll stick with the base functionality in this chapter, in my personal projects, I take things a step further by allowing for such methods as <code>$this-&gt;get()</code>, <code>$this-&gt;post()</code>, etc. Thanks to PHP overloading, this only requires the addition of a single method, which you could add to <code>app/tests/TestCase.php</code>.</p>
 
-<figure class='code'><figcaption><span>app/tests/controllers/PostsControllerTest.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>app/tests/TestCase.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -122,10 +122,10 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 <span class='line-number'>6</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="nx">Route</span><span class="o">::</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="s1">&#39;all posts&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'><span class="nx">Route</span><span class="o">::</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s1">&#39;all posts&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="p">});</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -146,7 +146,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 <li><code>assertRedirectedToRoute</code></li>
 <li><code>assertRedirectedToAction</code></li>
 <li><code>assertSessionHas</code></li>
-<li><code>assertSessionErrors</code></li>
+<li><code>assertSessionHasErrors</code></li>
 </ul>
 
 
@@ -175,7 +175,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 
 <ul>
 <li><code>$response-&gt;getOriginalContent()</code>: Fetch the original content, or the returned <code>View</code>. Optionally, you may access the <code>original</code> property directly, rather than calling the <code>getOriginalContent</code> method.</li>
-<li><code>$response-&gt;getContent()</code>: Fetch the rendered output. If a <code>View</code> instance is returned from the route, then <code>getContent()</code> will be equal to the HTML output. This can be helpful for DOM verifications, such as &#8220;the view must contain this string.&#8221;</li>
+<li><code>$response-&gt;getContent()</code>: Fetch the rendered output. If a <code>View</code> instance is returned from the route, then <code>getContent()</code> will be equal to the HTML output. This can be helpful for DOM verifications, such as &#8221;<em>the view must contain this string.</em>&#8221;</li>
 </ul>
 
 
@@ -213,13 +213,11 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-<span class='line-number'>7</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">Route</span><span class="o">::</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>    <span class="nx">$posts</span> <span class="o">=</span> <span class="nx">Post</span><span class="o">::</span><span class="nx">all</span><span class="p">();</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="nx">View</span><span class="o">::</span><span class="nx">make</span><span class="p">(</span><span class="s1">&#39;posts.index&#39;</span><span class="p">)</span>
-</span><span class='line'>        <span class="o">-&gt;</span><span class="kd">with</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="nx">$posts</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">View</span><span class="o">::</span><span class="nx">make</span><span class="p">(</span><span class="s1">&#39;posts.index&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="nx">$posts</span><span class="p">]);</span>
 </span><span class='line'><span class="p">});</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -274,13 +272,13 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 
 <p>There&#8217;s one glaring problem with our tests so far. Did you catch it?</p>
 
-<blockquote><p>For each test, a SQL query is being executed on the database. Though this is useful for certain kinds of testing (acceptance, integration), for basic controller testing, it will only decrease the performance of your tests.</p></blockquote>
+<blockquote><p>For each test, a SQL query is being executed on the database. Though this is useful for certain kinds of testing (acceptance, integration), for basic controller testing, it will only serve to decrease performance.</p></blockquote>
 
 <p>I&#8217;ve drilled this into your skull multiple times at this point. We&#8217;re not interested in testing Eloquent&#8217;s ability to fetch records from a database. It has its own tests. Taylor knows it works! Let&#8217;s not waste time and processing power repeating those same tests.</p>
 
 <p>Instead, it&#8217;s best to mock the database, and merely verify that the appropriate methods are called with the correct arguments. Or, in other words, we want to ensure that <code>Post::all()</code> never fires and hits the database. We know that works, so it doesn&#8217;t require testing.</p>
 
-<p>This section will depend heavily on the Mockery library. Please review that chapter from my book, if you&#8217;re not yet familiar with it.</p>
+<p>This section will depend heavily on the Mockery library. Please review that chapter <a href="http://leanpub.com/laravel-testing-decoded">from my book</a>, if you&#8217;re not yet familiar with it.</p>
 
 <h3>Required Refactoring</h3>
 
@@ -363,7 +361,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 </span><span class='line'>      <span class="nx">$posts</span> <span class="o">=</span> <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">post</span><span class="o">-&gt;</span><span class="nx">all</span><span class="p">();</span>
 </span><span class='line'>
 </span><span class='line'>      <span class="k">return</span> <span class="nx">View</span><span class="o">::</span><span class="nx">make</span><span class="p">(</span><span class="s1">&#39;posts.index&#39;</span><span class="p">)</span>
-</span><span class='line'>        <span class="o">-&gt;</span><span class="kd">with</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="nx">$posts</span><span class="p">);</span>
+</span><span class='line'>          <span class="o">-&gt;</span><span class="kd">with</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="nx">$posts</span><span class="p">);</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="p">}</span>
@@ -544,7 +542,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 
 <h2>Paths</h2>
 
-<p>One thing that we haven&#8217;t considered in this test is validation. There should be two separate paths through this function, dependent upon whether the validation passes:</p>
+<p>One thing that we haven&#8217;t considered in this test is validation. There should be two separate paths through the <code>store</code> method, dependent upon whether the validation passes:</p>
 
 <ol>
 <li>Redirect back to the &#8220;Create Post&#8221; form, and display the form validation errors.</li>
@@ -684,24 +682,24 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>From time to time, you&#8217;ll find that a method  you need to mock should return an object, itself. Luckily, with Mockery, this a cinch: we only need to create an anonymous mock, and pass an array, which signals the method name and response value, respectively. As such:</p>
+<p>From time to time, you&#8217;ll find that a method that needs to be mocked should return an object, itself. Luckily, with Mockery, this is a piece of cake: we only need to create an anonymous mock, and pass an array, which signals the method name and response value, respectively. As such:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">Mockery</span><span class="o">::</span><span class="nx">mock</span><span class="p">([</span><span class="s1">&#39;fails&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;true&#39;</span><span class="p">])</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>will return an object containing a <code>fails()</code> method that returns <code>true</code>.</p>
+<p>will prepare an object, containing a <code>fails()</code> method that returns <code>true</code>.</p>
 
 <h2>Repositories</h2>
 
-<p>To allow for the most flexibility, rather than creating a direct link between your controller and an ORM, like Eloquent, it&#8217;s better to code to an interface. The considerable advantage to this approach is that, should you perhaps need to swap out Eloquent for, say, Mongo or Redis, doing so literally requires the modification of a single line. Even better, the controller doesn&#8217;t ever need to be touched.</p>
+<p>To allow for optimal flexibility, rather than creating a direct link between your controller and an ORM, like Eloquent, it&#8217;s better to code to an interface. The considerable advantage to this approach is that, should you perhaps need to swap out Eloquent for, say, Mongo or Redis, doing so literally requires the modification of a single line. Even better, the controller doesn&#8217;t ever need to be touched.</p>
 
 <blockquote><p>Repositories represent the data access layer of your application.</p></blockquote>
 
 <p>What might an interface for managing the database layer of a <code>Post</code> look like? This should get you started.</p>
 
-<figure class='code'><figcaption><span>app/repositories/interfaces/PostRepositoryInterface.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>app/repositories/PostRepositoryInterface.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -712,7 +710,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">namespace</span> <span class="nx">Repositories</span><span class="err">\</span><span class="nx">Interfaces</span><span class="p">;</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">namespace</span> <span class="nx">Repositories</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="kr">interface</span> <span class="nx">PostRepositoryInterface</span> <span class="p">{</span>
 </span><span class='line'>
@@ -726,7 +724,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>This can certainly be extended, but we&#8217;ve added the bare minimum methods for the demo: <code>all</code>, <code>find</code>, and <code>create</code>. Notice that the repository interfaces are being stored within <code>app/repositories/interfaces</code>. Because this folder is not autoloaded by default, we need to update the <code>composer.json</code> file for the application to reference it.</p>
+<p>This can certainly be extended, but we&#8217;ve added the bare minimum methods for the demo: <code>all</code>, <code>find</code>, and <code>create</code>. Notice that the repository interfaces are being stored within <code>app/repositories</code>. Because this folder is not autoloaded by default, we need to update the <code>composer.json</code> file for the application to reference it.</p>
 
 <figure class='code'><figcaption><span>composer.json</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -767,10 +765,9 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 <span class='line-number'>18</span>
 <span class='line-number'>19</span>
 <span class='line-number'>20</span>
-<span class='line-number'>21</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
 </span><span class='line'>
-</span><span class='line'><span class="nx">use</span> <span class="nx">Repositories</span><span class="err">\</span><span class="nx">Interfaces</span><span class="err">\</span><span class="nx">PostRepositoryInterface</span> <span class="nx">as</span> <span class="nx">Post</span><span class="p">;</span>
+</span><span class='line'><span class="nx">use</span> <span class="nx">Repositories</span><span class="err">\</span><span class="nx">PostRepositoryInterface</span> <span class="nx">as</span> <span class="nx">Post</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="kr">class</span> <span class="nx">PostsController</span> <span class="kr">extends</span> <span class="nx">BaseController</span> <span class="p">{</span>
 </span><span class='line'>
@@ -785,8 +782,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 </span><span class='line'>    <span class="p">{</span>
 </span><span class='line'>        <span class="nx">$posts</span> <span class="o">=</span> <span class="nx">$this</span><span class="o">-&gt;</span><span class="nx">post</span><span class="o">-&gt;</span><span class="nx">all</span><span class="p">();</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="k">return</span> <span class="nx">View</span><span class="o">::</span><span class="nx">make</span><span class="p">(</span><span class="s1">&#39;posts.index&#39;</span><span class="p">)</span>
-</span><span class='line'>            <span class="o">-&gt;</span><span class="kd">with</span><span class="p">(</span><span class="s1">&#39;posts&#39;</span><span class="p">,</span> <span class="nx">$posts</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nx">View</span><span class="o">::</span><span class="nx">make</span><span class="p">(</span><span class="s1">&#39;posts.index&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;posts&#39;</span> <span class="o">=&gt;</span> <span class="nx">$posts</span><span class="p">]);</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -805,7 +801,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">App</span><span class="o">::</span><span class="nx">bind</span><span class="p">(</span>
-</span><span class='line'>    <span class="s1">&#39;Repositories\Interfaces\PostRepositoryInterface&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;Repositories\PostRepositoryInterface&#39;</span><span class="p">,</span>
 </span><span class='line'>    <span class="s1">&#39;Repositories\EloquentPostRepository&#39;</span>
 </span><span class='line'><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -815,7 +811,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 
 <p><code>app/repositories/EloquentPostRepository</code> will simply be a wrapper around Eloquent that implements <code>PostRepositoryInterface</code>. This way, we&#8217;re not restricting the API (and every other implementation) to Eloquent&#8217;s interpretation; we can name the methods however we wish.</p>
 
-<figure class='code'><figcaption><span>app/repositories/EloquentPostRepository</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>app/repositories/EloquentPostRepository.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -840,7 +836,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 <span class='line-number'>23</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">namespace</span> <span class="nx">Repositories</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="nx">use</span> <span class="nx">Repositories</span><span class="err">\</span><span class="nx">Interfaces</span><span class="err">\</span><span class="nx">PostRepositoryInterface</span><span class="p">;</span>
+</span><span class='line'><span class="nx">use</span> <span class="nx">Repositories</span><span class="err">\</span><span class="nx">PostRepositoryInterface</span><span class="p">;</span>
 </span><span class='line'><span class="nx">use</span> <span class="nx">Post</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="kr">class</span> <span class="nx">EloquentPostRepository</span> <span class="kr">implements</span> <span class="nx">PostRepositoryInterface</span> <span class="p">{</span>
@@ -894,7 +890,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 <span class='line-number'>22</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">namespace</span> <span class="nx">Repositories</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="nx">use</span> <span class="nx">Repositories</span><span class="err">\</span><span class="nx">Interfaces</span><span class="err">\</span><span class="nx">PostRepositoryInterface</span><span class="p">;</span>
+</span><span class='line'><span class="nx">use</span> <span class="nx">Repositories</span><span class="err">\</span><span class="nx">PostRepositoryInterface</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="kr">class</span> <span class="nx">RedisPostRepository</span> <span class="kr">implements</span> <span class="nx">PostRepositoryInterface</span> <span class="p">{</span>
 </span><span class='line'>
@@ -924,7 +920,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">App</span><span class="o">::</span><span class="nx">bind</span><span class="p">(</span>
-</span><span class='line'>    <span class="s1">&#39;Repositories\Interfaces\PostRepositoryInterface&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;Repositories\PostRepositoryInterface&#39;</span><span class="p">,</span>
 </span><span class='line'>    <span class="s1">&#39;Repositories\RedisPostRepository&#39;</span>
 </span><span class='line'><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -936,7 +932,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 
 <p>So far in this lesson, our organization has been a bit lacking. IoC bindings in the <code>routes.php</code> file? All repositories grouped together in one directory? Sure, that may work in the beginning, but, very quickly, it&#8217;ll become apparent that this doesn&#8217;t scale.</p>
 
-<p>In the final section of this article, we&#8217;ll PSR-ify the master library, and leverage service providers to register our bindings.</p>
+<p>In the final section of this article, we&#8217;ll PSR-ify our code, and leverage service providers to register any applicable bindings.</p>
 
 <blockquote><p>PSR-0 defines an autoloading standard that defines the mandatory requirements that must be adhered to for autoloader interoperability.</p></blockquote>
 
@@ -1081,11 +1077,11 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>There we go; that&#8217;s much cleaner. But what about those pesky bindings? The routes file may be a convenient place to test experiment, but it makes little sense to store them there permanently. Instead, we&#8217;ll use service providers. TODO - definition.</p>
-
-<p>A <code>StorageServiceProvider</code> class can be used to register all repository bindings.</p>
+<p>There we go; that&#8217;s much cleaner. But what about those pesky bindings? The routes file may be a convenient place to experiment, but it makes little sense to store them there permanently. Instead, we&#8217;ll use service providers.</p>
 
 <blockquote><p>Service providers are nothing more than bootstrap classes that can be used to do anything you wish: register a binding, hook into an event, import a routes file, etc.</p></blockquote>
+
+<p>A service provider&#8217;s <code>register()</code> will be triggered automatically by Laravel.</p>
 
 <figure class='code'><figcaption><span>app/lib/Way/Storage/StorageServiceProvider.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -1131,13 +1127,15 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="s1">&#39;providers&#39;</span> <span class="o">=&gt;</span> <span class="nx">array</span><span class="p">(</span>
-</span><span class='line'>  <span class="s1">&#39;Illuminate\Foundation\Providers\ArtisanServiceProvider&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;Illuminate\Auth\AuthServiceProvider&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="c1">// ...</span>
-</span><span class='line'>  <span class="s1">&#39;Way\Storage\StorageServiceProvider&#39;</span>
+</span><span class='line'>    <span class="s1">&#39;Illuminate\Foundation\Providers\ArtisanServiceProvider&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;Illuminate\Auth\AuthServiceProvider&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="c1">// ...</span>
+</span><span class='line'>    <span class="s1">&#39;Way\Storage\StorageServiceProvider&#39;</span>
 </span><span class='line'><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p>Good; now we have a dedicated file for registering new bindings.</p>
 
 <h3>Updating the Tests</h3>
 
@@ -1168,7 +1166,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>However, we can improve this even further. It stands to reason that every method within <code>PostsControllerTest</code> will require a mocked version of the repository. As such, it&#8217;s better to extract some of this prep work into its own method, like so:</p>
+<p>However, we can improve this. It stands to reason that every method within <code>PostsControllerTest</code> will require a mocked version of the repository. As such, it&#8217;s better to extract some of this prep work into its own method, like so:</p>
 
 <figure class='code'><figcaption><span>app/tests/controllers/PostsControllerTest.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -1223,7 +1221,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 
 <p>Not bad, ay?</p>
 
-<p>Now, if you want to be super-fly, and are willing to add a touch of test logic into your production, you could even perform your mocking within the Eloquent model! This would allow for:</p>
+<p>Now, if you want to be super-fly, and are willing to add a touch of test logic to your production code, you could even perform your mocking within the Eloquent model! This would allow for:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">Post</span><span class="o">::</span><span class="nx">shouldReceive</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="nx">once</span><span class="p">();</span>
@@ -1232,7 +1230,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 
 <p>Behind the scenes, this would mock <code>PostRepositoryInterface</code>, and update the IoC binding. You can&#8217;t get much more readable than that!</p>
 
-<p>Allowing for this syntax only requires you to update the <code>Post</code> model, or, better, a <code>BaseModel</code> that all of your Eloquent models extend. Here&#8217;s an example of the former:</p>
+<p>Allowing for this syntax only requires you to update the <code>Post</code> model, or, better, a <code>BaseModel</code> that all of the Eloquent models extend. Here&#8217;s an example of the former:</p>
 
 <figure class='code'><figcaption><span>app/models/Post.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>

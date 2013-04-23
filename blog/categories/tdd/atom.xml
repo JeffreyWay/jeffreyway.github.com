@@ -4,7 +4,7 @@
   <title><![CDATA[Category: TDD | Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/blog/categories/tdd/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-04-22T22:57:03-04:00</updated>
+  <updated>2013-04-22T23:25:07-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -30,15 +30,15 @@
 <p>The process of testing a controller can be divided into three pieces.</p>
 
 <ul>
-<li><strong>Isolate:</strong> Mock all dependencies (perhaps excluding the <code>View</code>)</li>
-<li><strong>Call:</strong> Trigger the desired controller method</li>
+<li><strong>Isolate:</strong> Mock all dependencies (perhaps excluding the <code>View</code>).</li>
+<li><strong>Call:</strong> Trigger the desired controller method.</li>
 <li><strong>Ensure:</strong> Perform assertions, verifying that the stage has been set properly.</li>
 </ul>
 
 
 <h2>The Hello World of Controller Testing</h2>
 
-<p>The best way to learn these things is through examples. Here's the "hello world" of controller testing in Laravel.</p>
+<p>The best way to learn these things is through examples. Here's the "<em>hello world</em>" of controller testing in Laravel.</p>
 
 <p>```js app/tests/controllers/PostsControllerTest.php
 &lt;?php</p>
@@ -81,7 +81,7 @@ public function testIndex()
 
 <p>Though we'll stick with the base functionality in this chapter, in my personal projects, I take things a step further by allowing for such methods as <code>$this-&gt;get()</code>, <code>$this-&gt;post()</code>, etc. Thanks to PHP overloading, this only requires the addition of a single method, which you could add to <code>app/tests/TestCase.php</code>.</p>
 
-<p>```js app/tests/controllers/PostsControllerTest.php
+<p>```js app/tests/TestCase.php
 public function __call($method, $args)
 {</p>
 
@@ -103,13 +103,14 @@ throw new BadMethodCallException;
 <p>```js app/routes.php
 &lt;?php</p>
 
-<pre><code>Route::get('posts', function()
-{
-    return 'all posts';
-});
+<p>Route::get('posts', function()
+{</p>
+
+<pre><code>return 'all posts';
 </code></pre>
 
-<p>```</p>
+<p>});
+```</p>
 
 <p>Running <code>phpunit</code> again will return us to green.</p>
 
@@ -128,7 +129,7 @@ throw new BadMethodCallException;
 <li><code>assertRedirectedToRoute</code></li>
 <li><code>assertRedirectedToAction</code></li>
 <li><code>assertSessionHas</code></li>
-<li><code>assertSessionErrors</code></li>
+<li><code>assertSessionHasErrors</code></li>
 </ul>
 
 
@@ -154,7 +155,7 @@ $this-&gt;assertViewHas('posts');
 
 <ul>
 <li><code>$response-&gt;getOriginalContent()</code>: Fetch the original content, or the returned <code>View</code>. Optionally, you may access the <code>original</code> property directly, rather than calling the <code>getOriginalContent</code> method.</li>
-<li><code>$response-&gt;getContent()</code>: Fetch the rendered output. If a <code>View</code> instance is returned from the route, then <code>getContent()</code> will be equal to the HTML output. This can be helpful for DOM verifications, such as "the view must contain this string."</li>
+<li><code>$response-&gt;getContent()</code>: Fetch the rendered output. If a <code>View</code> instance is returned from the route, then <code>getContent()</code> will be equal to the HTML output. This can be helpful for DOM verifications, such as "<em>the view must contain this string.</em>"</li>
 </ul>
 
 
@@ -187,8 +188,7 @@ Route::get('posts', function()
 
 <pre><code>$posts = Post::all();
 
-return View::make('posts.index')
-    -&gt;with('posts', $posts);
+return View::make('posts.index', ['posts', $posts]);
 </code></pre>
 
 <p>});
@@ -233,13 +233,13 @@ $this-&gt;assertInstanceOf('Illuminate\Database\Eloquent\Collection', $posts);
 
 <p>There's one glaring problem with our tests so far. Did you catch it?</p>
 
-<blockquote><p>For each test, a SQL query is being executed on the database. Though this is useful for certain kinds of testing (acceptance, integration), for basic controller testing, it will only decrease the performance of your tests.</p></blockquote>
+<blockquote><p>For each test, a SQL query is being executed on the database. Though this is useful for certain kinds of testing (acceptance, integration), for basic controller testing, it will only serve to decrease performance.</p></blockquote>
 
 <p>I've drilled this into your skull multiple times at this point. We're not interested in testing Eloquent's ability to fetch records from a database. It has its own tests. Taylor knows it works! Let's not waste time and processing power repeating those same tests.</p>
 
 <p>Instead, it's best to mock the database, and merely verify that the appropriate methods are called with the correct arguments. Or, in other words, we want to ensure that <code>Post::all()</code> never fires and hits the database. We know that works, so it doesn't require testing.</p>
 
-<p>This section will depend heavily on the Mockery library. Please review that chapter from my book, if you're not yet familiar with it.</p>
+<p>This section will depend heavily on the Mockery library. Please review that chapter <a href="http://leanpub.com/laravel-testing-decoded">from my book</a>, if you're not yet familiar with it.</p>
 
 <h3>Required Refactoring</h3>
 
@@ -299,7 +299,7 @@ Controller created successfully!
 <pre><code>  $posts = $this-&gt;post-&gt;all();
 
   return View::make('posts.index')
-    -&gt;with('posts', $posts);
+      -&gt;with('posts', $posts);
 </code></pre>
 
 <p>  }</p>
@@ -428,7 +428,7 @@ $this-&gt;assertRedirectedToRoute('posts.index');
 
 <h2>Paths</h2>
 
-<p>One thing that we haven't considered in this test is validation. There should be two separate paths through this function, dependent upon whether the validation passes:</p>
+<p>One thing that we haven't considered in this test is validation. There should be two separate paths through the <code>store</code> method, dependent upon whether the validation passes:</p>
 
 <ol>
 <li>Redirect back to the "Create Post" form, and display the form validation errors.</li>
@@ -526,24 +526,24 @@ Validator::shouldReceive('make')</p>
 
 <p>```</p>
 
-<p>From time to time, you'll find that a method  you need to mock should return an object, itself. Luckily, with Mockery, this a cinch: we only need to create an anonymous mock, and pass an array, which signals the method name and response value, respectively. As such:</p>
+<p>From time to time, you'll find that a method that needs to be mocked should return an object, itself. Luckily, with Mockery, this is a piece of cake: we only need to create an anonymous mock, and pass an array, which signals the method name and response value, respectively. As such:</p>
 
 <p><code>js
 Mockery::mock(['fails' =&gt; 'true'])
 </code></p>
 
-<p>will return an object containing a <code>fails()</code> method that returns <code>true</code>.</p>
+<p>will prepare an object, containing a <code>fails()</code> method that returns <code>true</code>.</p>
 
 <h2>Repositories</h2>
 
-<p>To allow for the most flexibility, rather than creating a direct link between your controller and an ORM, like Eloquent, it's better to code to an interface. The considerable advantage to this approach is that, should you perhaps need to swap out Eloquent for, say, Mongo or Redis, doing so literally requires the modification of a single line. Even better, the controller doesn't ever need to be touched.</p>
+<p>To allow for optimal flexibility, rather than creating a direct link between your controller and an ORM, like Eloquent, it's better to code to an interface. The considerable advantage to this approach is that, should you perhaps need to swap out Eloquent for, say, Mongo or Redis, doing so literally requires the modification of a single line. Even better, the controller doesn't ever need to be touched.</p>
 
 <blockquote><p>Repositories represent the data access layer of your application.</p></blockquote>
 
 <p>What might an interface for managing the database layer of a <code>Post</code> look like? This should get you started.</p>
 
-<p>```js app/repositories/interfaces/PostRepositoryInterface.php
-&lt;?php namespace Repositories\Interfaces;</p>
+<p>```js app/repositories/PostRepositoryInterface.php
+&lt;?php namespace Repositories;</p>
 
 <p>interface PostRepositoryInterface {</p>
 
@@ -557,7 +557,7 @@ public function create($input);
 <p>}
 ```</p>
 
-<p>This can certainly be extended, but we've added the bare minimum methods for the demo: <code>all</code>, <code>find</code>, and <code>create</code>. Notice that the repository interfaces are being stored within <code>app/repositories/interfaces</code>. Because this folder is not autoloaded by default, we need to update the <code>composer.json</code> file for the application to reference it.</p>
+<p>This can certainly be extended, but we've added the bare minimum methods for the demo: <code>all</code>, <code>find</code>, and <code>create</code>. Notice that the repository interfaces are being stored within <code>app/repositories</code>. Because this folder is not autoloaded by default, we need to update the <code>composer.json</code> file for the application to reference it.</p>
 
 <p>```js composer.json
 "autoload": {
@@ -578,7 +578,7 @@ public function create($input);
 <p>```js app/controllers/PostsController.php
 &lt;?php</p>
 
-<p>use Repositories\Interfaces\PostRepositoryInterface as Post;</p>
+<p>use Repositories\PostRepositoryInterface as Post;</p>
 
 <p>class PostsController extends BaseController {</p>
 
@@ -593,8 +593,7 @@ public function index()
 {
     $posts = $this-&gt;post-&gt;all();
 
-    return View::make('posts.index')
-        -&gt;with('posts', $posts);
+    return View::make('posts.index', ['posts' =&gt; $posts]);
 }
 </code></pre>
 
@@ -612,7 +611,7 @@ public function index()
 <p>```js app/routes.php
 App::bind(</p>
 
-<pre><code>'Repositories\Interfaces\PostRepositoryInterface',
+<pre><code>'Repositories\PostRepositoryInterface',
 'Repositories\EloquentPostRepository'
 </code></pre>
 
@@ -622,10 +621,10 @@ Verbalize this function call as, "*Laravel, baby, when you need an instance of</
 
 <p><code>app/repositories/EloquentPostRepository</code> will simply be a wrapper around Eloquent that implements <code>PostRepositoryInterface</code>. This way, we're not restricting the API (and every other implementation) to Eloquent's interpretation; we can name the methods however we wish.</p>
 
-<p>```js app/repositories/EloquentPostRepository
+<p>```js app/repositories/EloquentPostRepository.php
 &lt;?php namespace Repositories;</p>
 
-<p>use Repositories\Interfaces\PostRepositoryInterface;
+<p>use Repositories\PostRepositoryInterface;
 use Post;</p>
 
 <p>class EloquentPostRepository implements PostRepositoryInterface {</p>
@@ -658,7 +657,7 @@ public function create($input)
 <p>```js app/repositories/RedisPostRepository.php
 &lt;?php namespace Repositories;</p>
 
-<p>use Repositories\Interfaces\PostRepositoryInterface;</p>
+<p>use Repositories\PostRepositoryInterface;</p>
 
 <p>class RedisPostRepository implements PostRepositoryInterface {</p>
 
@@ -686,7 +685,7 @@ public function create($input)
 <p>```js app/routes.php
 App::bind(</p>
 
-<pre><code>'Repositories\Interfaces\PostRepositoryInterface',
+<pre><code>'Repositories\PostRepositoryInterface',
 'Repositories\RedisPostRepository'
 </code></pre>
 
@@ -699,7 +698,7 @@ App::bind(</p>
 
 <p>So far in this lesson, our organization has been a bit lacking. IoC bindings in the <code>routes.php</code> file? All repositories grouped together in one directory? Sure, that may work in the beginning, but, very quickly, it'll become apparent that this doesn't scale.</p>
 
-<p>In the final section of this article, we'll PSR-ify the master library, and leverage service providers to register our bindings.</p>
+<p>In the final section of this article, we'll PSR-ify our code, and leverage service providers to register any applicable bindings.</p>
 
 <blockquote><p>PSR-0 defines an autoloading standard that defines the mandatory requirements that must be adhered to for autoloader interoperability.</p></blockquote>
 
@@ -809,11 +808,11 @@ public function create($input)
 <p>}
 ```</p>
 
-<p>There we go; that's much cleaner. But what about those pesky bindings? The routes file may be a convenient place to test experiment, but it makes little sense to store them there permanently. Instead, we'll use service providers. TODO - definition.</p>
-
-<p>A <code>StorageServiceProvider</code> class can be used to register all repository bindings.</p>
+<p>There we go; that's much cleaner. But what about those pesky bindings? The routes file may be a convenient place to experiment, but it makes little sense to store them there permanently. Instead, we'll use service providers.</p>
 
 <blockquote><p>Service providers are nothing more than bootstrap classes that can be used to do anything you wish: register a binding, hook into an event, import a routes file, etc.</p></blockquote>
+
+<p>A service provider's <code>register()</code> will be triggered automatically by Laravel.</p>
 
 <p>```js app/lib/Way/Storage/StorageServiceProvider.php
 &lt;?php namespace Way\Storage;</p>
@@ -837,14 +836,19 @@ public function register()
 
 <p>To make this file known to Laravel, you only need to include it in <code>app/config/app.php</code>, within the <code>providers</code> array.</p>
 
-<p><code>js app/config/app.php
-'providers' =&gt; array(
-  'Illuminate\Foundation\Providers\ArtisanServiceProvider',
-  'Illuminate\Auth\AuthServiceProvider',
-  // ...
-  'Way\Storage\StorageServiceProvider'
-)
-</code></p>
+<p>```js app/config/app.php
+'providers' => array(</p>
+
+<pre><code>'Illuminate\Foundation\Providers\ArtisanServiceProvider',
+'Illuminate\Auth\AuthServiceProvider',
+// ...
+'Way\Storage\StorageServiceProvider'
+</code></pre>
+
+<p>)
+```</p>
+
+<p>Good; now we have a dedicated file for registering new bindings.</p>
 
 <h3>Updating the Tests</h3>
 
@@ -867,7 +871,7 @@ $this-&gt;assertViewHas('posts');
 <p>}
 ```</p>
 
-<p>However, we can improve this even further. It stands to reason that every method within <code>PostsControllerTest</code> will require a mocked version of the repository. As such, it's better to extract some of this prep work into its own method, like so:</p>
+<p>However, we can improve this. It stands to reason that every method within <code>PostsControllerTest</code> will require a mocked version of the repository. As such, it's better to extract some of this prep work into its own method, like so:</p>
 
 <p>```js app/tests/controllers/PostsControllerTest.php
 public function setUp()
@@ -907,7 +911,7 @@ $this-&gt;assertViewHas('posts');
 
 <p>Not bad, ay?</p>
 
-<p>Now, if you want to be super-fly, and are willing to add a touch of test logic into your production, you could even perform your mocking within the Eloquent model! This would allow for:</p>
+<p>Now, if you want to be super-fly, and are willing to add a touch of test logic to your production code, you could even perform your mocking within the Eloquent model! This would allow for:</p>
 
 <p><code>js
 Post::shouldReceive('all')-&gt;once();
@@ -915,7 +919,7 @@ Post::shouldReceive('all')-&gt;once();
 
 <p>Behind the scenes, this would mock <code>PostRepositoryInterface</code>, and update the IoC binding. You can't get much more readable than that!</p>
 
-<p>Allowing for this syntax only requires you to update the <code>Post</code> model, or, better, a <code>BaseModel</code> that all of your Eloquent models extend. Here's an example of the former:</p>
+<p>Allowing for this syntax only requires you to update the <code>Post</code> model, or, better, a <code>BaseModel</code> that all of the Eloquent models extend. Here's an example of the former:</p>
 
 <p>```js app/models/Post.php
 &lt;?php</p>
