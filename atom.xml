@@ -4,7 +4,7 @@
   <title><![CDATA[Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-04-22T23:25:07-04:00</updated>
+  <updated>2013-04-22T23:30:53-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -1350,7 +1350,7 @@ Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>It feels good, doesn&#8217;t it?</p>
+<p>It feels good, doesn&#8217;t it? Hopefully, this article hasn&#8217;t been too overwhelming. The key is to learn how to organize your repositories in such a way to make them as easy as possible to mock and inject into your controllers. As a result of that effort, your tests will be lightning fast!</p>
 
 <blockquote><p>This article is an excerpt from my upcoming book, <a href="https://leanpub.com/laravel-testing-decoded">Laravel Testing Decoded</a>. Stay tuned for its release in May, 2013!</p></blockquote>
 ]]></content>
