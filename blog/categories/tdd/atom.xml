@@ -4,7 +4,7 @@
   <title><![CDATA[Category: TDD | Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/blog/categories/tdd/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-04-22T23:30:53-04:00</updated>
+  <updated>2013-04-23T11:25:45-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -700,7 +700,7 @@ App::bind(</p>
 
 <p>In the final section of this article, we'll PSR-ify our code, and leverage service providers to register any applicable bindings.</p>
 
-<blockquote><p>PSR-0 defines an autoloading standard that defines the mandatory requirements that must be adhered to for autoloader interoperability.</p></blockquote>
+<blockquote><p>PSR-0 defines the mandatory requirements that must be adhered to for autoloader interoperability.</p></blockquote>
 
 <p>A PSR-0 loader may be registered with Composer, via the <code>psr-0</code> object.</p>
 
