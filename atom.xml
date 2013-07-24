@@ -4,7 +4,7 @@
   <title><![CDATA[Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-07-24T14:53:21-04:00</updated>
+  <updated>2013-07-24T15:01:31-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -18,7 +18,17 @@
     <link href="http://jeffreyway.github.io/blog/2013/07/24/aspectmock-is-pretty-neat/"/>
     <updated>2013-07-24T14:48:00-04:00</updated>
     <id>http://jeffreyway.github.io/blog/2013/07/24/aspectmock-is-pretty-neat</id>
-    <content type="html"><![CDATA[<p><video width='640' height='400' preload='none' controls poster='http://s3.imathis.com/video/zero-to-fancy-buttons.png'><source src='http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/AspectMock-Is-Pretty-Neat.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'></video></p>
+    <content type="html"><![CDATA[<p>I&#8217;ve been toying around with a new PHP mocking library, <a href="https://github.com/Codeception/AspectMock">AspectMock</a>, that takes a
+different approach - one that doesn&#8217;t necessarily require you to resort
+to dependency injection.</p>
+
+<p>I&#8217;ve only spent a matter of hours with this tool, but it just might
+change the way I structure my projects in the future. I guess we&#8217;ll see.
+Have a watch below and decide for yourself!</p>
+
+<p><video width='640' height='400' preload='none' controls poster='http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/AspectMock-Is-Pretty-Neat.png'><source src='http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/AspectMock-Is-Pretty-Neat.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'></video></p>
+
+<p><a href="http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/AspectMock-Is-Pretty-Neat.mp4">Download Video</a></p>
 ]]></content>
   </entry>
   
