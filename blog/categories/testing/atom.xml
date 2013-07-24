@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: testing, | Jeffrey Way]]></title>
+  <link href="http://jeffreyway.github.io/blog/categories/testing/atom.xml" rel="self"/>
+  <link href="http://jeffreyway.github.io/"/>
+  <updated>2013-07-24T14:49:37-04:00</updated>
+  <id>http://jeffreyway.github.io/</id>
+  <author>
+    <name><![CDATA[Jeffrey Way]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[AspectMock is Pretty Neat]]></title>
+    <link href="http://jeffreyway.github.io/blog/2013/07/24/aspectmock-is-pretty-neat/"/>
+    <updated>2013-07-24T14:48:00-04:00</updated>
+    <id>http://jeffreyway.github.io/blog/2013/07/24/aspectmock-is-pretty-neat</id>
+    <content type="html"><![CDATA[<p>TD.</p>
+]]></content>
+  </entry>
+  
+</feed>
