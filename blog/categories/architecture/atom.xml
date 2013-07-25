@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: patterns | Jeffrey Way]]></title>
-  <link href="http://jeffreyway.github.io/blog/categories/patterns/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Architecture | Jeffrey Way]]></title>
+  <link href="http://jeffreyway.github.io/blog/categories/architecture/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-07-25T14:34:12-04:00</updated>
+  <updated>2013-07-25T14:38:32-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
