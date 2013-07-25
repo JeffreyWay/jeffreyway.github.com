@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: patterns | Jeffrey Way]]></title>
+  <link href="http://jeffreyway.github.io/blog/categories/patterns/atom.xml" rel="self"/>
+  <link href="http://jeffreyway.github.io/"/>
+  <updated>2013-07-25T14:29:48-04:00</updated>
+  <id>http://jeffreyway.github.io/</id>
+  <author>
+    <name><![CDATA[Jeffrey Way]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Teaser of The MVC Mindset]]></title>
+    <link href="http://jeffreyway.github.io/blog/2013/07/25/teaser-of-the-mvc-mindset/"/>
+    <updated>2013-07-25T14:22:00-04:00</updated>
+    <id>http://jeffreyway.github.io/blog/2013/07/25/teaser-of-the-mvc-mindset</id>
+    <content type="html"><![CDATA[<p>My next course for <a href="http://tutsplus.com">Tuts+ Premium</a> will be released on the final day of July (2013). We have lots of courses that cover beginner-level PHP, and plenty more that focus on object-oriented programming and architecture. But what we didn't yet have was a course that transitions the developer from messy, muddy procedural code, over to a
+more structured MVC-based architecture.</p>
+
+<p>Here's an excerpt from the course: lesson seven.</p>
+
+<p><video width='640' height='400' preload='none' controls poster='http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/7-Dedicated-Controllers.png'><source src='http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/7-Dedicated-Controllers.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'></video></p>
+
+<p><a href="http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/7-Dedicated-Controllers.mp4">Download Video</a></p>
+
+<blockquote><p>Stay tuned to <a href="http://twitter.com/tutspremium">@tutspremium</a> on Twitter
+for the official release announcement next week!</p></blockquote>
+]]></content>
+  </entry>
+  
+</feed>
