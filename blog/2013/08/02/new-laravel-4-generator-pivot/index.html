@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>AspectMock is Pretty Neat - Jeffrey Way</title>
+  <title>New Laravel 4 Generator: Pivot - Jeffrey Way</title>
   <meta name="author" content="Jeffrey Way">
 
   
-  <meta name="description" content="I&#8217;ve been toying around with a new PHP mocking library, AspectMock (built upon Go! AOP) that takes a
-different approach - one that doesn&#8217; &hellip;">
+  <meta name="description" content="Creating joinable/pivot tables can sometimes be confusing. Should the table names be plural? In what order do we write the table names to make &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ different approach - one that doesn&#8217; &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jeffreyway.github.io/blog/2013/07/24/aspectmock-is-pretty-neat">
+  <link rel="canonical" href="http://jeffreyway.github.io/blog/2013/08/02/new-laravel-4-generator-pivot">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Jeffrey Way" type="application/atom+xml">
@@ -69,7 +68,7 @@ different approach - one that doesn&#8217; &hellip;">
   
   <header>
     
-      <h1 class="entry-title">AspectMock Is Pretty Neat</h1>
+      <h1 class="entry-title">New Laravel 4 Generator: Pivot</h1>
     
     
       <p class="meta">
@@ -85,24 +84,60 @@ different approach - one that doesn&#8217; &hellip;">
   
 
 
-<time datetime="2013-07-24T14:48:00-04:00" pubdate data-updated="true">Jul 24<span>th</span>, 2013</time>
+<time datetime="2013-08-02T11:41:00-04:00" pubdate data-updated="true">Aug 2<span>nd</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>I&#8217;ve been toying around with a new PHP mocking library, <a href="https://github.com/Codeception/AspectMock">AspectMock</a> (built upon Go! AOP) that takes a
-different approach - one that doesn&#8217;t necessarily require you to resort
-to dependency injection.</p>
+<div class="entry-content"><p>Creating joinable/pivot tables can sometimes be confusing. Should the table names be plural? In what order do we write the table names to make Laravel happy? What fields should be in the pivot table?</p>
 
-<p>I&#8217;ve only spent a matter of hours with this tool, but it just might
-change the way I structure my projects in the future. I guess we&#8217;ll see.
-Have a watch below and decide for yourself!</p>
+<p>I decided to add a pivot table helper generator to my <a href="https://packagist.org/packages/way/generators">Laravel 4 Generators
+package</a>. It&#8217;s a cinch to
+use!</p>
 
-<p><video width='640' height='400' preload='none' controls poster='http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/AspectMock-Is-Pretty-Neat.png'><source src='http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/AspectMock-Is-Pretty-Neat.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'></video></p>
+<!--more-->
 
-<p><a href="http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/AspectMock-Is-Pretty-Neat.mp4">Download Video</a></p>
+
+<p><video width='640' height='400' preload='none' controls poster='http://2013-website.s3.amazonaws.com/videos/screenshots/Laravel-4-Generators-Pivot.png'><source src='http://2013-website.s3.amazonaws.com/videos/Laravel-4-Generators-Pivot.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'></video></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>php artisan generate:pivot tableOne tableTwo
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217;s it. Behind the scenes, Laravel will figure out what the table
+name should be, and will also set the necessary fields. For example, a
+post can have many tags, and a tag can have many posts. So, we need a
+joinable table to connect the two, when performing DB queries. Easy!</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>php artisan generate:pivot posts tags
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It doesn&#8217;t matter which order you provide the table names (or whether you pluralize them or not). The command will correctly create a <code>post_tag</code> migration that has <code>post_id</code> and <code>tag_id</code> fields.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">Schema</span><span class="o">::</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;post_tag&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Blueprint</span> <span class="nx">$table</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">$table</span><span class="o">-&gt;</span><span class="nx">integer</span><span class="p">(</span><span class="s1">&#39;post_id&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">$table</span><span class="o">-&gt;</span><span class="nx">integer</span><span class="p">(</span><span class="s1">&#39;tag_id&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally, simply migrate the database to create it.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>php artisan migrate
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finished!</p>
 </div>
 
 
@@ -125,12 +160,12 @@ Have a watch below and decide for yourself!</p>
   
 
 
-<time datetime="2013-07-24T14:48:00-04:00" pubdate data-updated="true">Jul 24<span>th</span>, 2013</time>
+<time datetime="2013-08-02T11:41:00-04:00" pubdate data-updated="true">Aug 2<span>nd</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/php/'>PHP</a>, <a class='category' href='/blog/categories/testing/'>testing</a>
+    <a class='category' href='/blog/categories/laravel/'>Laravel</a>, <a class='category' href='/blog/categories/php/'>PHP</a>
   
 </span>
 
@@ -139,7 +174,7 @@ Have a watch below and decide for yourself!</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jeffreyway.github.io/blog/2013/07/24/aspectmock-is-pretty-neat/" data-via="jeffrey_way" data-counturl="http://jeffreyway.github.io/blog/2013/07/24/aspectmock-is-pretty-neat/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://jeffreyway.github.io/blog/2013/08/02/new-laravel-4-generator-pivot/" data-via="jeffrey_way" data-counturl="http://jeffreyway.github.io/blog/2013/08/02/new-laravel-4-generator-pivot/" >Tweet</a>
   
   
   
@@ -150,10 +185,8 @@ Have a watch below and decide for yourself!</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/04/20/testing-laravel-controllers/" title="Previous Post: Testing Laravel Controllers">&laquo; Testing Laravel Controllers</a>
+        <a class="basic-alignment left" href="/blog/2013/07/25/teaser-of-the-mvc-mindset/" title="Previous Post: "The MVC Mindset" Teaser">&laquo; "The MVC Mindset" Teaser</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/07/25/teaser-of-the-mvc-mindset/" title="Next Post: "The MVC Mindset" Teaser">"The MVC Mindset" Teaser &raquo;</a>
       
     </p>
   </footer>
@@ -251,8 +284,8 @@ Have a watch below and decide for yourself!</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://jeffreyway.github.io/blog/2013/07/24/aspectmock-is-pretty-neat/';
-        var disqus_url = 'http://jeffreyway.github.io/blog/2013/07/24/aspectmock-is-pretty-neat/';
+        var disqus_identifier = 'http://jeffreyway.github.io/blog/2013/08/02/new-laravel-4-generator-pivot/';
+        var disqus_url = 'http://jeffreyway.github.io/blog/2013/08/02/new-laravel-4-generator-pivot/';
         var disqus_script = 'embed.js';
       
     (function () {

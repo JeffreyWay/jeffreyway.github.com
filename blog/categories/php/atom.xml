@@ -4,7 +4,7 @@
   <title><![CDATA[Category: PHP | Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-07-25T14:53:59-04:00</updated>
+  <updated>2013-08-02T11:50:17-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -12,6 +12,57 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[New Laravel 4 Generator: Pivot]]></title>
+    <link href="http://jeffreyway.github.io/blog/2013/08/02/new-laravel-4-generator-pivot/"/>
+    <updated>2013-08-02T11:41:00-04:00</updated>
+    <id>http://jeffreyway.github.io/blog/2013/08/02/new-laravel-4-generator-pivot</id>
+    <content type="html"><![CDATA[<p>Creating joinable/pivot tables can sometimes be confusing. Should the table names be plural? In what order do we write the table names to make Laravel happy? What fields should be in the pivot table?</p>
+
+<p>I decided to add a pivot table helper generator to my <a href="https://packagist.org/packages/way/generators">Laravel 4 Generators
+package</a>. It's a cinch to
+use!</p>
+
+<!--more-->
+
+
+<p><video width='640' height='400' preload='none' controls poster='http://2013-website.s3.amazonaws.com/videos/screenshots/Laravel-4-Generators-Pivot.png'><source src='http://2013-website.s3.amazonaws.com/videos/Laravel-4-Generators-Pivot.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'></video></p>
+
+<p><code>bash
+php artisan generate:pivot tableOne tableTwo
+</code></p>
+
+<p>That's it. Behind the scenes, Laravel will figure out what the table
+name should be, and will also set the necessary fields. For example, a
+post can have many tags, and a tag can have many posts. So, we need a
+joinable table to connect the two, when performing DB queries. Easy!</p>
+
+<p><code>bash
+php artisan generate:pivot posts tags
+</code></p>
+
+<p>It doesn't matter which order you provide the table names (or whether you pluralize them or not). The command will correctly create a <code>post_tag</code> migration that has <code>post_id</code> and <code>tag_id</code> fields.</p>
+
+<p>```js
+Schema::create('post_tag', function(Blueprint $table) {</p>
+
+<pre><code>$table-&gt;integer('post_id');
+$table-&gt;integer('tag_id');
+</code></pre>
+
+<p>});
+```</p>
+
+<p>Finally, simply migrate the database to create it.</p>
+
+<p><code>bash
+php artisan migrate
+</code></p>
+
+<p>Finished!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA["The MVC Mindset" Teaser]]></title>
