@@ -4,7 +4,7 @@
   <title><![CDATA[Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-08-02T11:52:05-04:00</updated>
+  <updated>2013-08-05T19:57:37-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -12,6 +12,25 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Laravel.io Podcast #2]]></title>
+    <link href="http://jeffreyway.github.io/blog/2013/08/05/laravel-dot-io-podcast-number-2/"/>
+    <updated>2013-08-05T19:50:00-04:00</updated>
+    <id>http://jeffreyway.github.io/blog/2013/08/05/laravel-dot-io-podcast-number-2</id>
+    <content type="html"><![CDATA[<p>Earlier this week, I was a guest on the second episode of the <a href="http://laravel.io/topic/41/podcast-2-laracon-architecture-testing-and-more">Laravel.io podcast</a>. If you&#8217;re interested in listening to three guys ramble on about Laravel architecture, testing, and the upcoming conference in Amsterdam, have a listen after the jump.</p>
+
+<!--more-->
+
+
+<p><audio controls>
+<source src="http://2013-website.s3.amazonaws.com/videos/laravel-episode-2.mp3">
+<a href="http://2013-website.s3.amazonaws.com/videos/laravel-episode-2.mp3">Download Podcast</a>
+</audio></p>
+
+<p>Alternatively, you can subscribe to the podcast on iTunes.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[New Laravel 4 Generator: Pivot]]></title>
