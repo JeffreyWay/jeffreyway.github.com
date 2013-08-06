@@ -4,7 +4,7 @@
   <title><![CDATA[Category: PHP | Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-08-05T19:57:37-04:00</updated>
+  <updated>2013-08-05T20:00:15-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -49,8 +49,11 @@ php artisan generate:pivot posts tags
 <p>```js
 Schema::create('post_tag', function(Blueprint $table) {</p>
 
-<pre><code>$table-&gt;integer('post_id');
-$table-&gt;integer('tag_id');
+<pre><code>$table-&gt;increments('id');
+$table-&gt;integer('post_id')-&gt;unsigned()-&gt;index();
+$table-&gt;integer('tag_id')-&gt;unsigned()-&gt;index();
+$table-&gt;foreign('post_id')-&gt;references('id')-&gt;on('posts')-&gt;onDelete('cascade');
+$table-&gt;foreign('tag_id')-&gt;references('id')-&gt;on('tags')-&gt;onDelete('cascade');
 </code></pre>
 
 <p>});
