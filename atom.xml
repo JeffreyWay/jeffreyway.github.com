@@ -4,7 +4,7 @@
   <title><![CDATA[Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-08-10T19:56:09-04:00</updated>
+  <updated>2013-08-10T19:56:50-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -19,8 +19,7 @@
     <updated>2013-08-10T19:51:00-04:00</updated>
     <id>http://jeffreyway.github.io/blog/2013/08/10/faster-testing-with-my-package</id>
     <content type="html"><![CDATA[<p>I <a href="https://packagist.org/packages/way/laravel-test-helpers">released a package</a> months ago, but never really promoted it much. In
-this five minute video, if you&#8217;re interested, let me give you a
-whirlwind tour of what you can do with it.</p>
+this five minute video, if you&#8217;re interested, let me give you a whirlwind tour of what you can do with it (factories, PHPUnit wrappers, controller/model helpers, etc.)</p>
 
 <!--more-->
 
