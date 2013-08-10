@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Testing | Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/blog/categories/testing/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-08-10T19:55:20-04:00</updated>
+  <updated>2013-08-10T19:56:09-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Faster Testing With My Package]]></title>
+    <title type="html"><![CDATA[Faster Laravel Tests With...]]></title>
     <link href="http://jeffreyway.github.io/blog/2013/08/10/faster-testing-with-my-package/"/>
     <updated>2013-08-10T19:51:00-04:00</updated>
     <id>http://jeffreyway.github.io/blog/2013/08/10/faster-testing-with-my-package</id>
