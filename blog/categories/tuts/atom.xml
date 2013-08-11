@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Tuts | Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/blog/categories/tuts/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-08-10T20:05:49-04:00</updated>
+  <updated>2013-08-10T20:10:18-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -23,7 +23,7 @@ more structured MVC-based architecture.</p>
 
 <p>Here's an excerpt from the course: lesson seven.</p>
 
-<p>{% video http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/7-Dedicated-Controllers.mp4 640 400 http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/7-Dedicated-Controllers.png %}</p>
+<p><video width='640' height='400' preload='none' controls poster='http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/7-Dedicated-Controllers.png'><source src='http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/7-Dedicated-Controllers.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'></video></p>
 
 <p><a href="http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/7-Dedicated-Controllers.mp4">Download Video</a></p>
 

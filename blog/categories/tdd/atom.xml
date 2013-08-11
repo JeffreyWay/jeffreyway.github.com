@@ -4,7 +4,7 @@
   <title><![CDATA[Category: TDD | Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/blog/categories/tdd/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-08-10T20:05:49-04:00</updated>
+  <updated>2013-08-10T20:10:18-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -601,7 +601,7 @@ public function index()
 
 <p>If you run the server and view the output, you'll be met with the dreaded (but beautiful) Whoops error page, declaring that "<em>PostRepositoryInterface is not instantiable.</em>"</p>
 
-<p>{% img /images/testing-controllers/instantiable.png %}</p>
+<p><img src="/images/testing-controllers/instantiable.png"></p>
 
 <p>If you think about it, of course the framework is squawking! Laravel is smart, but it's not a mind reader. It needs to be told which implementation of the interface should be used within the controller.</p>
 

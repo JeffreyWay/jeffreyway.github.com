@@ -4,7 +4,7 @@
   <title><![CDATA[Category: PHP | Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-08-10T20:05:49-04:00</updated>
+  <updated>2013-08-10T20:10:18-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -27,7 +27,7 @@ use!</p>
 <!--more-->
 
 
-<p>{% video http://2013-website.s3.amazonaws.com/videos/Laravel-4-Generators-Pivot.mp4 640 400 http://2013-website.s3.amazonaws.com/videos/screenshots/Laravel-4-Generators-Pivot.png %}</p>
+<p><video width='640' height='400' preload='none' controls poster='http://2013-website.s3.amazonaws.com/videos/screenshots/Laravel-4-Generators-Pivot.png'><source src='http://2013-website.s3.amazonaws.com/videos/Laravel-4-Generators-Pivot.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'></video></p>
 
 <p><a href="http://2013-website.s3.amazonaws.com/videos/Laravel-4-Generators-Pivot.mp4">Download Video</a></p>
 
@@ -79,7 +79,7 @@ more structured MVC-based architecture.</p>
 
 <p>Here's an excerpt from the course: lesson seven.</p>
 
-<p>{% video http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/7-Dedicated-Controllers.mp4 640 400 http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/7-Dedicated-Controllers.png %}</p>
+<p><video width='640' height='400' preload='none' controls poster='http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/7-Dedicated-Controllers.png'><source src='http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/7-Dedicated-Controllers.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'></video></p>
 
 <p><a href="http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/7-Dedicated-Controllers.mp4">Download Video</a></p>
 
@@ -101,7 +101,7 @@ to dependency injection.</p>
 change the way I structure my projects in the future. I guess we'll see.
 Have a watch below and decide for yourself!</p>
 
-<p>{% video http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/AspectMock-Is-Pretty-Neat.mp4 640 400 http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/AspectMock-Is-Pretty-Neat.png %}</p>
+<p><video width='640' height='400' preload='none' controls poster='http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/AspectMock-Is-Pretty-Neat.png'><source src='http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/AspectMock-Is-Pretty-Neat.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'></video></p>
 
 <p><a href="http://tutsplus.s3.amazonaws.com/tutspremium/Quick-Tips/AspectMock-Is-Pretty-Neat.mp4">Download Video</a></p>
 ]]></content>
@@ -695,7 +695,7 @@ public function index()
 
 <p>If you run the server and view the output, you'll be met with the dreaded (but beautiful) Whoops error page, declaring that "<em>PostRepositoryInterface is not instantiable.</em>"</p>
 
-<p>{% img /images/testing-controllers/instantiable.png %}</p>
+<p><img src="/images/testing-controllers/instantiable.png"></p>
 
 <p>If you think about it, of course the framework is squawking! Laravel is smart, but it's not a mind reader. It needs to be told which implementation of the interface should be used within the controller.</p>
 

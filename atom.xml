@@ -4,7 +4,7 @@
   <title><![CDATA[Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-08-10T19:56:50-04:00</updated>
+  <updated>2013-08-10T20:10:18-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -18,8 +18,7 @@
     <link href="http://jeffreyway.github.io/blog/2013/08/10/faster-testing-with-my-package/"/>
     <updated>2013-08-10T19:51:00-04:00</updated>
     <id>http://jeffreyway.github.io/blog/2013/08/10/faster-testing-with-my-package</id>
-    <content type="html"><![CDATA[<p>I <a href="https://packagist.org/packages/way/laravel-test-helpers">released a package</a> months ago, but never really promoted it much. In
-this five minute video, if you&#8217;re interested, let me give you a whirlwind tour of what you can do with it (factories, PHPUnit wrappers, controller/model helpers, etc.)</p>
+    <content type="html"><![CDATA[<p>I <a href="https://packagist.org/packages/way/laravel-test-helpers">released a package</a> months ago, but never really promoted it much. In this five minute video, if you&#8217;re interested, let me give you a whirlwind tour of what you can do with it (factories, PHPUnit wrappers, controller/model helpers, etc.)</p>
 
 <!--more-->
 
@@ -27,6 +26,13 @@ this five minute video, if you&#8217;re interested, let me give you a whirlwind 
 <p><video width='640' height='400' preload='none' controls poster='http://2013-website.s3.amazonaws.com/videos/screenshots/Laravel-Test-Helpers-Tour.png'><source src='http://2013-website.s3.amazonaws.com/videos/Laravel-Test-Helpers-Tour.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'></video></p>
 
 <p><a href="http://2013-website.s3.amazonaws.com/videos/Laravel-Test-Helpers-Tour.mp4">Download Video</a></p>
+
+<p>To get setup, just install it with Composer.</p>
+
+<pre><code>"require-dev": {
+    "way/laravel-test-helpers": "dev-master"
+}
+</code></pre>
 ]]></content>
   </entry>
   
