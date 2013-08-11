@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Testing | Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/blog/categories/testing/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-08-10T19:56:50-04:00</updated>
+  <updated>2013-08-10T20:03:38-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -24,9 +24,20 @@ this five minute video, if you're interested, let me give you a whirlwind tour o
 <!--more-->
 
 
-<p><video width='640' height='400' preload='none' controls poster='http://2013-website.s3.amazonaws.com/videos/screenshots/Laravel-Test-Helpers-Tour.png'><source src='http://2013-website.s3.amazonaws.com/videos/Laravel-Test-Helpers-Tour.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'></video></p>
+<p>{% video http://2013-website.s3.amazonaws.com/videos/Laravel-Test-Helpers-Tour.mp4 640 400 http://2013-website.s3.amazonaws.com/videos/screenshots/Laravel-Test-Helpers-Tour.png %}</p>
 
 <p><a href="http://2013-website.s3.amazonaws.com/videos/Laravel-Test-Helpers-Tour.mp4">Download Video</a></p>
+
+<p>To get setup, just install it with Composer.</p>
+
+<p>```js
+"require-dev": {</p>
+
+<pre><code>"way/laravel-test-helpers": "dev-master"
+</code></pre>
+
+<p>}
+```</p>
 ]]></content>
   </entry>
   
