@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Testing | Jeffrey Way]]></title>
   <link href="http://jeffreyway.github.io/blog/categories/testing/atom.xml" rel="self"/>
   <link href="http://jeffreyway.github.io/"/>
-  <updated>2013-08-10T20:03:38-04:00</updated>
+  <updated>2013-08-10T20:05:00-04:00</updated>
   <id>http://jeffreyway.github.io/</id>
   <author>
     <name><![CDATA[Jeffrey Way]]></name>
@@ -30,7 +30,7 @@ this five minute video, if you're interested, let me give you a whirlwind tour o
 
 <p>To get setup, just install it with Composer.</p>
 
-<p>```js
+<p>```js composer.json
 "require-dev": {</p>
 
 <pre><code>"way/laravel-test-helpers": "dev-master"
